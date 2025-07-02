@@ -25,4 +25,25 @@ public class KMessedSort {
 
         return arr; // 回傳已排序的陣列
     }
+ 
+    public boolean hasCycle(ListNode head) {
+        // 快慢指針初始化，都從頭節點開始
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // 當 fast 和 fast.next 都不為 null 時才繼續迴圈
+        while (fast != null && fast.next != null) {
+            slow = slow.next;         // 慢指針走一步
+            fast = fast.next.next;    // 快指針走兩步
+
+            // 如果快慢指針相遇，表示有環
+            if (slow == fast) {
+                return true;
+            }
+        }
+
+        // 如果跳出迴圈，表示沒環（正常走完）
+        return false;
+    } 
+
 }
