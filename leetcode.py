@@ -81,4 +81,5 @@ node4.next = node2
 
 print(has_cycle(node1))
 
-
+def find_busiest_time(data):
+    
