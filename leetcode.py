@@ -1,6 +1,9 @@
 import heapq
 
 
+from typing import List
+
+
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         # 如果當前節點為 None，代表沒找到
@@ -39,8 +42,9 @@ class Solution:
         while heap:
             res.append(heapq.heappop(heap))
         return res
-        
-# heappush:👉 把一個元素 item 加進 heap 中，並維持最小堆的結構        
+
+
+# heappush:👉 把一個元素 item 加進 heap 中，並維持最小堆的結構
 # heap = []
 # heapq.heappush(heap, 3)
 # heapq.heappush(heap, 1)
@@ -57,6 +61,7 @@ class ListNode:
         self.val = val
         self.next = next
 
+
 def has_cycle(self, head: ListNode) -> bool:
     slow = head
     fast = head
@@ -66,6 +71,7 @@ def has_cycle(self, head: ListNode) -> bool:
         if fast == slow:
             return True
     return False
+
 
 # debug your code below
 node1 = ListNode(1)
@@ -77,9 +83,28 @@ node4 = ListNode(4)
 node1.next = node2
 node2.next = node3
 node3.next = node4
-node4.next = node2 
+node4.next = node2
 
 print(has_cycle(node1))
 
+
+# Generate all combinations of well-formed parentheses. A parenthesis combination is well-formed if each opening parenthesis "(" is closed by a matching closing parenthesis ")" in the correct order.
+def generate_parentheses(n: int) -> List[str]:
+    if n == 0:
+        return []
+    res = []
+    stack = []
+    stack.append(("", 0, 0))
+    while stack:
+        current, open_count, close_count = stack.pop()
+        if len(current) == 2 * n:
+            res.append(current)
+            continue
+        if open_count < n:
+            stack.append((current + "(", open_count + 1, close_count))
+        if close_count < open_count:
+            stack.append((current + ")", open_count, close_count + 1))
+    return res
+
 def find_busiest_time(data):
-    
+    pass
