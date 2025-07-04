@@ -106,5 +106,6 @@ def generate_parentheses(n: int) -> List[str]:
             stack.append((current + ")", open_count, close_count + 1))
     return res
 
+
 def find_busiest_time(data):
     pass
