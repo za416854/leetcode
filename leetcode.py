@@ -106,6 +106,28 @@ def generate_parentheses(n: int) -> List[str]:
             stack.append((current + ")", open_count, close_count + 1))
     return res
 
+# Find the Duplicates
+from typing import List
+
+def find_duplicates(arr1: List[int], arr2: List[int]) -> List[int]:
+    result = []
+    i, j = 0, 0  # 雙指針初始化
+
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] == arr2[j]:
+            result.append(arr1[i])  # 元素相同 → 加入結果
+            i += 1
+            j += 1
+        elif arr1[i] < arr2[j]:
+            i += 1  # 小的那個往前走
+        else:
+            j += 1
+
+    return result
+
+# 測試
+print(find_duplicates([1, 2, 3, 5, 6], [2, 3, 4, 5]))  # [2, 3, 5]
+
 
 def find_busiest_time(data):
     pass
