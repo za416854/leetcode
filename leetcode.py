@@ -125,6 +125,19 @@ def find_duplicates(arr1: List[int], arr2: List[int]) -> List[int]:
 
     return result
 
+def isToeplitz(arr: List[List[int]]) -> bool:
+    rows = len(matrix)
+    cols = len(matrix[0])
+
+    # Loop through each element (except last row and column)
+    for i in range(rows - 1):
+        for j in range(cols - 1):
+            # Compare current cell with bottom-right neighbor
+            if matrix[i][j] != matrix[i + 1][j + 1]:
+                return False  # Mismatch → not Toeplitz
+
+    return True  # All diagonals matched
+
 # 測試
 print(find_duplicates([1, 2, 3, 5, 6], [2, 3, 4, 5]))  # [2, 3, 5]
 
