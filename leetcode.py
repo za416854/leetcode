@@ -142,5 +142,39 @@ def isToeplitz(arr: List[List[int]]) -> bool:
 print(find_duplicates([1, 2, 3, 5, 6], [2, 3, 4, 5]))  # [2, 3, 5]
 
 
+
 def find_busiest_time(data):
     pass
+
+# 236. Lowest Common Ancestor of a Binary Tree        
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+        
+def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    if root is None or root == p or q == root:
+        return root
+    # debug usage is quite useful for recursion, so we can set print() here to observe
+    # print("Visiting:", root.val)
+    # or 
+    # print("At node", root.val, "left:", left, "right:", right) 
+    left = self.lowestCommonAncestor(root.left, p, q)
+    right = self.lowestCommonAncestor(root.right, p, q)
+    
+    if left and right:
+        return root
+    
+    return left if left else right
+    
+
+# for recursion practice 
+# def recursion(self, node: TreeNode) -> TreeNode:
+#     if BASE_CASE:
+#         return node
+#     left = recursion(node.left)
+#     right = recursion(node.right)
+    
+#     return combine(left, right, node)
+    
