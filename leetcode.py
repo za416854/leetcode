@@ -1,7 +1,8 @@
 import heapq
+from collections import deque
 
 
-from typing import List
+from typing import List, Optional
 
 
 class Solution:
@@ -177,4 +178,30 @@ def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -
 #     right = recursion(node.right)
     
 #     return combine(left, right, node)
-    
+
+# 199. Binary Tree Right Side View
+'''
+This one requires some imagination, we hv to spererate the tree into levels parellely and add the rightmost node val
+The whole idea is: because level_size - 1 must be the rightmost one in each layer, 
+so we need to append it. Then the for loop is to simulate the whole tree from left to right, 
+and then slowly push it to the rightmost and append it.
+'''
+def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+    if not root:
+        return []
+    result = []
+    queue = deque([root])  # Initialize BFS queue
+    while queue:
+        level_size = len(queue)  # Number of nodes at current level
+        for i in range(level_size): # simulate that all nodes in this layer have been processed from leftmost to rightmost
+            node = queue.popleft()
+            # Add the last node of this level to result
+            if i == level_size - 1: # represents this is the rightmost node of level
+                result.append(node.val) # append it cause only seeable from right side 
+            # Add children for the next level
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+    return result
+            
