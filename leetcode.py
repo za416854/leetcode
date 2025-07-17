@@ -204,4 +204,25 @@ def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
             if node.right:
                 queue.append(node.right)
     return result
-            
+
+# 1161. Maximum Level Sum of a Binary Tree (BFS)
+def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+    queue = deque([root])
+    max_level = 1              # stores the level with the max sum
+    level_number = 1          # tracks the current level number
+    max_val = float('-inf')   # stores the maximum level sum seen so far
+    while queue:
+        level_size = len(queue)  # number of nodes at current level
+        curr_val = 0             # sum of values at this level
+        for _ in range(level_size):
+            node = queue.popleft()
+            curr_val += node.val
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        if curr_val > max_val:
+            max_val = curr_val
+            max_level = level_number  # update max level correctly
+        level_number += 1  # move to next level
+    return max_level
