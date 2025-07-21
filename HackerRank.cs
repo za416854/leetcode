@@ -82,6 +82,36 @@ class Result
         System.Console.WriteLine(minRes.ToString() + " " + maxRes.ToString());
         // System.Console.WriteLine();
     }
+
+    /*
+     * Complete the 'timeConversion' function below.
+     *
+     * The function is expected to return a STRING.
+     * The function accepts STRING s as parameter.
+     */
+
+    public static string timeConversion(string s)
+    {
+        string ampm = s.Substring(s.Length - 2);
+        string[] splitTime = s.Substring(0, 8).Split(':');
+        int hour = int.Parse(splitTime[0]);
+
+        if (ampm == "PM")
+        {
+            if (hour != 12)
+            {
+                hour += 12;
+            }
+        }
+        else
+        {
+            if (hour == 12) hour = 0;
+        }
+        return $"{hour:D2}:{splitTime[1]}:{splitTime[2]}";
+
+
+
+    }
     /*
      * Complete the 'findMedian' function below.
      *
