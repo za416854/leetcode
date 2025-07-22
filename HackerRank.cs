@@ -125,6 +125,100 @@ class Result
         int res = arr[middleIndex];
         return res;
     }
+
+    /*
+     * Complete the 'lonelyinteger' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts INTEGER_ARRAY a as parameter.
+     */
+
+    public static int lonelyinteger(List<int> a)
+    {
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        foreach (int i in a)
+        {
+            if (map.ContainsKey(i))
+            {
+                map[i] += 1;
+            }
+            else
+            {
+                map[i] = 1;
+            }
+        }
+        foreach (var pair in map)
+        {
+            if (pair.Value == 1)
+            {
+                return pair.Key;
+            }
+        }
+        return 0;
+
+    }
+
+    /*
+     * Complete the 'diagonalDifference' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts 2D_INTEGER_ARRAY arr as parameter.
+     */
+
+    public static int diagonalDifference(List<List<int>> arr)
+    {
+        int arrLength = arr.Count;
+        int diagSum = 0;
+        int antiDiagSum = 0;
+        for (int i = 0; i < arrLength; i++)
+        {
+            diagSum += arr[i][i];
+            antiDiagSum += arr[i][arrLength - 1 - i];
+        }
+        return Math.Abs(diagSum - antiDiagSum);
+
+
+    }
+
+    /*
+     * Complete the 'countingSort' function below.
+     *
+     * The function is expected to return an INTEGER_ARRAY.
+     * The function accepts INTEGER_ARRAY arr as parameter.
+     */
+
+    public static List<int> countingSort(List<int> arr)
+    {
+        Dictionary<int, int> dic = new Dictionary<int, int>();
+        foreach (int i in arr)
+        {
+            if (dic.ContainsKey(i))
+            {
+                dic[i] += 1;
+            }
+            else
+            {
+                dic[i] = 1;
+            }
+        }
+        int[] res = new int[100];
+        for (int i = 0; i < 100; i++)
+        {
+            if (dic.ContainsKey(i))
+            {
+                res[i] += dic[i];
+            }
+            else
+            {
+                res[i] = 0;
+            }
+        }
+        return res.ToList();
+    }
+    public static int flippingMatrix(List<List<int>> matrix)
+    {
+        
+    }
 }
 
 class Solution
