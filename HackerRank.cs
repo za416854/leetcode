@@ -217,19 +217,93 @@ class Result
     }
     public static int flippingMatrix(List<List<int>> matrix)
     {
-        
+        // answer is in python
+    }
+
+    /*
+     * Complete the 'caesarCipher' function below.
+     *
+     * The function is expected to return a STRING.
+     * The function accepts following parameters:
+     *  1. STRING s
+     *  2. INTEGER k
+     */
+
+    public static string caesarCipher(string s, int k)
+    {
+        k = k % 26;
+        StringBuilder sb = new StringBuilder();
+        foreach (char c in s)
+        {
+            if (char.IsLower(c))
+            {
+                char shifted = (char)('a' + (c - 'a' + k) % 26);
+                sb.Append(shifted);
+            }
+            else if (char.IsUpper(c))
+            {
+                char shifted = (char)('A' + (c - 'A' + k) % 26);
+                sb.Append(shifted);
+            }
+            else
+            {
+                sb.Append(c);
+            }
+
+        }
+        return sb.ToString();
+
+    }
+    public static int PalindromeIndex(string s)
+    {
+        int left = 0;
+        int right = s.Length - 1;
+        while (left < right)
+        {
+            if (s[left] != s[right])
+            {
+                if (IsPalindrome(s, left + 1, right))
+                {
+                    return left;
+                }
+                else if (IsPalindrome(s, left, right - 1))
+                {
+                    return right;
+                }
+                return -1;
+            }
+            left++;
+            right--;
+        }
+        return -1;
+    }
+    private static bool IsPalindrome(string s, int left, int right)
+    {
+        while (left < right)
+        {
+            if (s[left] != s[right])
+            {
+                return false;
+            }
+            left--;
+            right++;
+        }
+        return true;
     }
 }
 
 class Solution
 {
+    // dotnet new console -n MyApp：建立一次新的 C# 主控台應用程式專案，只需要在「第一次建立專案」的時候用到這行。
+    //  下一次要編譯和執行，只做 cd MyApp => dotnet run
+
     public static void Main(string[] args)
     {
-        int n = Convert.ToInt32(Console.ReadLine().Trim());
+        // int n = Convert.ToInt32(Console.ReadLine().Trim());
 
-        List<int> arr = Console.ReadLine().TrimEnd().Split(' ').ToList().Select(arrTemp => Convert.ToInt32(arrTemp)).ToList();
+        // List<int> arr = Console.ReadLine().TrimEnd().Split(' ').ToList().Select(arrTemp => Convert.ToInt32(arrTemp)).ToList();
 
-        Result.plusMinus(arr);
-
+        // Result.plusMinus(arr);
+        Console.WriteLine(PalindromeIndex("bcbc"));
     }
 }
