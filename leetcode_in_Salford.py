@@ -161,19 +161,80 @@ class Solution:
             return count
 
         return dfs(root, 0)
+
     # 1372. Longest ZigZag Path in a Binary Tree
     def longestZigZag(self, root: TreeNode) -> int:
-        self.max_length = 0
+        max_paths = 0
 
-        def dfs(node: TreeNode, direction: str, length: int):
+        def dfs(node: TreeNode, direction: str, curr_max_paths: int):
+            nonlocal max_paths  # to let python know max_paths doent belong to dfs function
             if not node:
                 return
-            self.max_length = max(self.max_length, length)
-            dfs(node.left, "left", length + 1 if direction == "right" else 1)
-            dfs(node.right, "right", length + 1 if direction == "left" else 1)
+            max_paths = max(max_paths, curr_max_paths)
+            # direction == right doesnt affect that this line is going to left so dont be misled by 'left' or right string
+            dfs(node.left, "left", curr_max_paths + 1 if direction == "right" else 1)
+            dfs(node.right, "right", curr_max_paths + 1 if direction == "left" else 1)
 
-        dfs(root, "", 0)
-        return self.max_length
+        dfs(root, "", max_paths)
+        return max_paths
+
+    # 1. Two Sum, cause we gonna return the index of number so use dictionary to store {value,index}
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        dic = dict()
+        for i in range(len(nums)):
+            complement = target - nums[i]
+            if complement in dic.keys():
+                return [dic[complement], i]
+            dic[nums[i]] = i
+
+    # 236. Lowest Common Ancestor of a Binary Tree
+    def lowestCommonAncestor(
+        self, root: "TreeNode", p: "TreeNode", q: "TreeNode"
+    ) -> "TreeNode":
+        if not root or root == p or root == q:
+            return root
+
+        res_left = self.lowestCommonAncestor(root.left, p, q)
+        res_right = self.lowestCommonAncestor(root.right, p, q)
+
+        if res_left and res_right:
+            return root
+
+        return res_left or res_right
+
+    # 450. Delete Node in a BST
+    def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
+        if not root:
+            return None
+        if key < root.val:
+            root.left = self.deleteNode(root.left, key)
+        elif key > root.val:
+            root.right = self.deleteNode(root.right, key)
+        else:
+            if not root.left and not root.right:
+                return None
+            elif not root.left:
+                return root.right
+            elif not root.right:
+                return root.left
+            else:
+                temp = root.right
+                while temp.left:
+                    temp = temp.left
+                root.val = temp.val
+                root.right = self.deleteNode(root.right, temp.val)
+        return root
+
+    # 700. Search in a Binary Search Tree
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        if not root:
+            return None
+        if val < root:
+            root.left = self.searchBST(root.left, val)
+        elif val > root:
+            root.right = self.searchBST(root.right, val)
+        else:
+            return root
 
 
 if __name__ == "__main__":
