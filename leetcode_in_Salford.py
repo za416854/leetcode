@@ -1,4 +1,4 @@
-from collections import deque
+from collections import defaultdict, deque
 from typing import List, Optional
 
 
@@ -128,18 +128,39 @@ class Solution:
         left = self.maxDepth(root.left)
         right = self.maxDepth(root.right)
         return max(left, right) + 1
+
     # 1448. Count Good Nodes in Binary Tree
     def goodNodes(self, root: TreeNode) -> int:
-        def dfs(node: TreeNode, max_so_far: int) -> int:
+        def dfs(node: TreeNode, max_val: int):
             if not node:
                 return 0
-            good = 1 if node.val >= max_so_far else 0
-            curr_max = max(node.val, max_so_far)
-            left_good = dfs(node.left, curr_max)
-            right_good = dfs(node.right, curr_max)
-            return good + left_good + right_good
+            good = 1 if node.val >= max_val else 0
+            new_max_val = max(max_val, node.val)
+            left = dfs(node.left, new_max_val)
+            right = dfs(node.right, new_max_val)
+            return left + right + good
+
         return dfs(root, root.val)
-            
+    # 437. Path Sum III
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        dic = defaultdict(int)
+        dic[0] = 1
+
+        def dfs(node: TreeNode, curr_sum: int):
+            if not node:
+                return 0
+            new_curr_sum = curr_sum + node.val
+            count = dic[new_curr_sum - targetSum]
+            dic[new_curr_sum] += 1
+            count += dfs(node.left, new_curr_sum)
+            count += dfs(node.right, new_curr_sum)
+
+            dic[new_curr_sum] -= 1
+
+            return count
+
+        return dfs(root, 0)
+
 
 if __name__ == "__main__":
     # Create a binary tree
