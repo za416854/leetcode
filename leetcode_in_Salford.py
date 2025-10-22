@@ -141,6 +141,7 @@ class Solution:
             return left + right + good
 
         return dfs(root, root.val)
+
     # 437. Path Sum III
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
         dic = defaultdict(int)
@@ -160,6 +161,19 @@ class Solution:
             return count
 
         return dfs(root, 0)
+    # 1372. Longest ZigZag Path in a Binary Tree
+    def longestZigZag(self, root: TreeNode) -> int:
+        self.max_length = 0
+
+        def dfs(node: TreeNode, direction: str, length: int):
+            if not node:
+                return
+            self.max_length = max(self.max_length, length)
+            dfs(node.left, "left", length + 1 if direction == "right" else 1)
+            dfs(node.right, "right", length + 1 if direction == "left" else 1)
+
+        dfs(root, "", 0)
+        return self.max_length
 
 
 if __name__ == "__main__":
