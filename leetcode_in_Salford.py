@@ -265,7 +265,7 @@ class Solution:
         return vals[k - 1]
     # 530. Minimum Absolute Difference in BST
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        self.min_num = sys.maxsize
+        self.min_num = sys.maxsize 
         self.prev = None
         def dfs(node:TreeNode):
             if not node: 
