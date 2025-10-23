@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+import sys
 from typing import List, Optional
 
 
@@ -235,6 +236,66 @@ class Solution:
             root.right = self.searchBST(root.right, val)
         else:
             return root
+    # 230. Kth Smallest Element in a BST
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        # first solution 
+        self.count = 0 
+        self.res = None
+        def inorder(node:TreeNode):
+            if not node:
+                return None
+            inorder(node.left)
+            self.count += 1
+            if self.count == k:
+                self.res = node.val
+            inorder(node.right)
+        inorder(root)
+        return self.res 
+        # second solution 
+        vals = list()
+
+        def dfs(node: TreeNode):
+            if not node:
+                return
+            dfs(node.left)
+            vals.append(node.val)
+            dfs(node.right)
+
+        dfs(root)
+        return vals[k - 1]
+    # 530. Minimum Absolute Difference in BST
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        self.min_num = sys.maxsize
+        self.prev = None
+        def dfs(node:TreeNode):
+            if not node: 
+                return None
+            dfs(node.left)
+            if self.prev is not None:
+                self.min_num = min(self.min_num, node.val - self.prev)
+            self.prev = node.val
+            dfs(node.right)
+        dfs(root)
+        return self.min_num
+    # 98. Validate Binary Search Tree
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        self.res = True
+        self.prev = None
+        def dfs(node: TreeNode):
+            if not node:
+                return
+            dfs(node.left)
+            if self.prev is not None:
+                # The definition of BST is: for all nodes: the value of the left subtree is strictly less than the root node, and the value of the right subtree is strictly greater than the root node.
+                if node.val <= self.prev: 
+                    self.res = False
+            self.prev = node.val
+            dfs(node.right)
+        dfs(root)
+        return self.res
+            
+            
+            
 
 
 if __name__ == "__main__":
