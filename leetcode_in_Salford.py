@@ -293,7 +293,30 @@ class Solution:
             dfs(node.right)
         dfs(root)
         return self.res
-            
+    # 841. Keys and Rooms
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        # dfs solution
+        visited = set()
+        def dfs(room):
+            if room in visited:
+                return
+            visited.add(room)
+            for key in rooms[room]:
+                dfs(key)
+        dfs(0)
+        return len(visited) == len(rooms)
+        
+        # bfs solution
+        queue = deque([0])
+        visited = set([0])
+        while queue:
+            room = queue.popleft()
+            for key in rooms[room]:
+                if key not in visited:
+                    visited.add(key)
+                    queue.append(key)
+        return len(visited) == len(rooms)
+        
             
             
 
