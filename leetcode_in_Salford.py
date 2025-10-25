@@ -236,12 +236,14 @@ class Solution:
             root.right = self.searchBST(root.right, val)
         else:
             return root
+
     # 230. Kth Smallest Element in a BST
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        # first solution 
-        self.count = 0 
+        # first solution
+        self.count = 0
         self.res = None
-        def inorder(node:TreeNode):
+
+        def inorder(node: TreeNode):
             if not node:
                 return None
             inorder(node.left)
@@ -249,9 +251,10 @@ class Solution:
             if self.count == k:
                 self.res = node.val
             inorder(node.right)
+
         inorder(root)
-        return self.res 
-        # second solution 
+        return self.res
+        # second solution
         vals = list()
 
         def dfs(node: TreeNode):
@@ -263,49 +266,58 @@ class Solution:
 
         dfs(root)
         return vals[k - 1]
+
     # 530. Minimum Absolute Difference in BST
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        self.min_num = sys.maxsize 
+        self.min_num = sys.maxsize
         self.prev = None
-        def dfs(node:TreeNode):
-            if not node: 
+
+        def dfs(node: TreeNode):
+            if not node:
                 return None
             dfs(node.left)
             if self.prev is not None:
                 self.min_num = min(self.min_num, node.val - self.prev)
             self.prev = node.val
             dfs(node.right)
+
         dfs(root)
         return self.min_num
+
     # 98. Validate Binary Search Tree
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         self.res = True
         self.prev = None
+
         def dfs(node: TreeNode):
             if not node:
                 return
             dfs(node.left)
             if self.prev is not None:
                 # The definition of BST is: for all nodes: the value of the left subtree is strictly less than the root node, and the value of the right subtree is strictly greater than the root node.
-                if node.val <= self.prev: 
+                if node.val <= self.prev:
                     self.res = False
             self.prev = node.val
             dfs(node.right)
+
         dfs(root)
         return self.res
+
     # 841. Keys and Rooms
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
         # dfs solution
         visited = set()
+
         def dfs(room):
             if room in visited:
                 return
             visited.add(room)
             for key in rooms[room]:
                 dfs(key)
+
         dfs(0)
         return len(visited) == len(rooms)
-        
+
         # bfs solution
         queue = deque([0])
         visited = set([0])
@@ -316,11 +328,58 @@ class Solution:
                     visited.add(key)
                     queue.append(key)
         return len(visited) == len(rooms)
-        
-            
-            
 
+    # 547. Number of Provinces
+    def findCircleNum(self, isConnected: List[List[int]]) -> int:
+        # dfs solution
+        n = len(isConnected)
+        visited = [False] * n
+        provinces = 0
 
+        def dfs(city):
+            for j in range(n):
+                if not visited[j] and isConnected[city][j] == 1:
+                    visited[j] = True
+                    dfs(j)
+
+        for i in range(n):
+            if not visited[i]:
+                visited[i] = True
+                dfs(i)
+                provinces += 1
+        return provinces
+
+        # bfs solution
+        n = len(isConnected)
+        provinces = 0
+        visited = set()
+        for i in range(n):
+            if i not in visited:
+                queue = deque([i])
+                while queue:
+                    city = queue.popleft()
+                    for j in range(n):
+                        if j not in visited and isConnected[city][j] == 1:
+                            visited.add(j)
+                            queue.append(j)
+                provinces += 1
+        return provinces
+
+    # 1466. Reorder Routes to Make All Paths Lead to the City Zero
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+        graph = defaultdict(list)
+        for a, b in connections:
+            graph[a].append((b, 1))
+            graph[b].append((a, 0))
+        visited = set()
+        def dfs(city):
+            visited.add(city)
+            changes = 0
+            for nei, must_increase in graph[city]:
+                if nei not in visited:
+                    changes += must_increase + dfs(nei)
+            return changes
+        return dfs(0)
 if __name__ == "__main__":
     # Create a binary tree
     root = TreeNode(1)
@@ -332,3 +391,5 @@ if __name__ == "__main__":
     solution = Solution()
     print(solution.maxLevelSum(root))  # Output: [1, 3, 4]
     print("1448: ", solution.goodNodes(root))  # 4
+    connections = [[0, 1], [1, 2], [2, 3], [3, 0]]
+    print(" ", solution.minReorder(4, connections))
