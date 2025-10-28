@@ -367,19 +367,50 @@ class Solution:
 
     # 1466. Reorder Routes to Make All Paths Lead to the City Zero
     def minReorder(self, n: int, connections: List[List[int]]) -> int:
-        graph = defaultdict(list)
+        dic = defaultdict(list)
         for a, b in connections:
-            graph[a].append((b, 1))
-            graph[b].append((a, 0))
+            dic[a].append((b, 1))
+            dic[b].append((a, 0))
         visited = set()
-        def dfs(city):
+
+        def dfs(city: int):
+            count = 0
             visited.add(city)
-            changes = 0
-            for nei, must_increase in graph[city]:
+            for nei, found in dic[city]:
                 if nei not in visited:
-                    changes += must_increase + dfs(nei)
-            return changes
+                    count += found + dfs(nei)
+            return count
+
         return dfs(0)
+    # 399. Evaluate Division
+    def calcEquation(
+        self, equations: List[List[str]], values: List[float], queries: List[List[str]]
+    ) -> List[float]:
+        graph = defaultdict(list)
+        results = [float]
+        for (a, b), val in zip(equations, values):
+            graph[a].append((b, val))
+            graph[b].append((a, 1 / val))
+
+        def dfs(curr: str, target: str, acc: float, visited: set):
+            if curr == target:
+                return acc
+            visited.add(curr)
+            for nei, val in graph[curr]:
+                if nei not in visited:
+                    result = dfs(nei, target, acc * val, visited)
+                    if result != -1:
+                        return result
+            return -1
+
+        for a, b in queries:
+            if a not in graph or b not in graph:
+                results.append(-1)
+            else:
+                results.append(dfs(a, b, 1.0, set()))
+        return results
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+
 if __name__ == "__main__":
     # Create a binary tree
     root = TreeNode(1)
