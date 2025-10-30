@@ -1,6 +1,7 @@
 from collections import defaultdict, deque
 import sys
 from typing import List, Optional
+import heapq
 
 
 # Definition for a binary tree node.
@@ -409,8 +410,56 @@ class Solution:
             else:
                 results.append(dfs(a, b, 1.0, set()))
         return results
+    # 215. Kth Largest Element in an Array
     def findKthLargest(self, nums: List[int], k: int) -> int:
+        heap = []
+        for num in nums:
+            heapq.heappush(heap, num)
+            if len(heap) > k:
+                heapq.heappop(heap)
+        return heap[0]
+    def maxScore(self, nums1, nums2, k):
+        pairs = sorted(zip(nums1, nums2), key= lambda x: -x[1]) # 依照 index = 1 (nums2)由大到小排序
+        curr = 0
+        max_res = 0
+        heap = []
+        for num1, num2 in pairs:
+            heapq.heappush(heap, num1)
+            curr += num1
+            if len(heap) > k:
+                smallest = heapq.heappop(heap)
+                curr -= smallest
+            if len(heap) == k:
+                max_res = max(max_res, curr * num2)
+        return max_res
+            
 
+        
+# 2336. Smallest Number in Infinite Set
+class SmallestInfiniteSet:
+
+    def __init__(self):
+        self.current = 1          # 下一個尚未取出的自然數
+        self.heap = []            # 被加回的數字
+        self.added = set()        # 避免 heap 重複數字
+
+    def popSmallest(self) -> int:
+        if self.heap:             # 若有被加回的數，優先取最小
+            smallest = heapq.heappop(self.heap)
+            self.added.remove(smallest)
+            return smallest
+        else:
+            val = self.current
+            self.current += 1     # 往下一個自然數移動
+            return val
+
+    def addBack(self, num: int) -> None:
+        if num < self.current and num not in self.added:
+            heapq.heappush(self.heap, num)
+            self.added.add(num)  
+     
+           
+        
 if __name__ == "__main__":
     # Create a binary tree
     root = TreeNode(1)
