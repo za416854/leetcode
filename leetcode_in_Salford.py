@@ -383,6 +383,7 @@ class Solution:
             return count
 
         return dfs(0)
+
     # 399. Evaluate Division
     def calcEquation(
         self, equations: List[List[str]], values: List[float], queries: List[List[str]]
@@ -410,6 +411,7 @@ class Solution:
             else:
                 results.append(dfs(a, b, 1.0, set()))
         return results
+
     # 215. Kth Largest Element in an Array
     def findKthLargest(self, nums: List[int], k: int) -> int:
         heap = []
@@ -418,8 +420,12 @@ class Solution:
             if len(heap) > k:
                 heapq.heappop(heap)
         return heap[0]
+
+    # 2542. Maximum Subsequence Score
     def maxScore(self, nums1, nums2, k):
-        pairs = sorted(zip(nums1, nums2), key= lambda x: -x[1]) # 依照 index = 1 (nums2)由大到小排序
+        pairs = sorted(
+            zip(nums1, nums2), key=lambda x: -x[1]
+        )  # 依照 index = 1 (nums2)由大到小排序
         curr = 0
         max_res = 0
         heap = []
@@ -432,34 +438,95 @@ class Solution:
             if len(heap) == k:
                 max_res = max(max_res, curr * num2)
         return max_res
-            
+    # 2462. Total Cost to Hire K Workers
+    def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
+        n = len(costs)
+        left = 0
+        right = n - 1
+        left_heap, right_heap = [], []
+        res = 0
+        for _ in range(candidates):
+            if left <= right:
+                heapq.heappush(left_heap, costs[left])
+                left += 1
+            if left <= right:
+                heapq.heappush(right_heap, costs[right])
+                right -= 1
+        for _ in range(k):
+            if right_heap and (not left_heap or right_heap[0] < left_heap[0]):
+                right_candidate = heapq.heappop(right_heap)
+                res += right_candidate
+                if left <= right:
+                    heapq.heappush(right_heap, costs[right])
+                    right -= 1
+            else:
+                left_candidate = heapq.heappop(left_heap)
+                res += left_candidate
+                if left <= right:
+                    heapq.heappush(left_heap, costs[left])
+                    left += 1
+        return res
 
-        
+    # 374. Guess Number Higher or Lower
+    def guessNumber(self, n: int) -> int:
+        left = 1
+        right = n
+        while left <= right:
+            mid = (left + right) // 2
+            res = guess(mid)
+            if res == 0:
+                return mid
+            elif res < 0:
+                right = mid - 1
+            else:
+                left = mid + 1
+
+    # 2300. Successful Pairs of Spells and Potions
+    def successfulPairs(
+        self, spells: List[int], potions: List[int], success: int
+    ) -> List[int]:
+        n = len(spells)
+        m = len(potions)
+        res = [0] * n
+        potions.sort()
+        for i in range(n):
+            left = 0
+            right = m - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                product = spells[i] * potions[mid]
+                if product >= success:
+                    right = mid -1
+                else:
+                    left = mid + 1
+            res[i] = m - left
+        return res
+                    
+
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
 
     def __init__(self):
-        self.current = 1          # 下一個尚未取出的自然數
-        self.heap = []            # 被加回的數字
-        self.added = set()        # 避免 heap 重複數字
+        self.current = 1  # 下一個尚未取出的自然數
+        self.heap = []  # 被加回的數字
+        self.added = set()  # 避免 heap 重複數字
 
     def popSmallest(self) -> int:
-        if self.heap:             # 若有被加回的數，優先取最小
+        if self.heap:  # 若有被加回的數，優先取最小
             smallest = heapq.heappop(self.heap)
             self.added.remove(smallest)
             return smallest
         else:
             val = self.current
-            self.current += 1     # 往下一個自然數移動
+            self.current += 1  # 往下一個自然數移動
             return val
 
     def addBack(self, num: int) -> None:
         if num < self.current and num not in self.added:
             heapq.heappush(self.heap, num)
-            self.added.add(num)  
-     
-           
-        
+            self.added.add(num)
+
+
 if __name__ == "__main__":
     # Create a binary tree
     root = TreeNode(1)
