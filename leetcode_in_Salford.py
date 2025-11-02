@@ -501,7 +501,20 @@ class Solution:
                     left = mid + 1
             res[i] = m - left
         return res
-                    
+    # 162. Find Peak Element
+    def findPeakElement(self, nums: List[int]) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left < right:     
+            mid =  left + (right - left) // 2
+            if nums[mid] < nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid
+        return left
+            
+            
+            
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
