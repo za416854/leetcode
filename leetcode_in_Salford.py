@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+import math
 import sys
 from typing import List, Optional
 import heapq
@@ -438,6 +439,7 @@ class Solution:
             if len(heap) == k:
                 max_res = max(max_res, curr * num2)
         return max_res
+
     # 2462. Total Cost to Hire K Workers
     def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
         n = len(costs)
@@ -496,25 +498,44 @@ class Solution:
                 mid = left + (right - left) // 2
                 product = spells[i] * potions[mid]
                 if product >= success:
-                    right = mid -1
+                    right = mid - 1
                 else:
                     left = mid + 1
             res[i] = m - left
         return res
+
     # 162. Find Peak Element
     def findPeakElement(self, nums: List[int]) -> int:
         left = 0
         right = len(nums) - 1
-        while left < right:     
-            mid =  left + (right - left) // 2
+        while left < right:
+            mid = left + (right - left) // 2
             if nums[mid] < nums[mid + 1]:
                 left = mid + 1
             else:
                 right = mid
         return left
-            
-            
-            
+
+    # 875. Koko Eating Bananas
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        # 這題思路是要用雙指針來找出最小的可以在h小時內吃完香蕉的根數，利用 can_finish去算 piles 裡每個 pile 要吃得時數，若<=h則繼續往左
+        # 尋找有沒有更小可以在h小時內吃完香蕉的根數
+        def can_finish(piles: List[int], h: int, k: int):
+            total_hours = 0
+            for pile in piles:
+                total_hours += math.ceil(pile / k)
+            return total_hours <= h
+
+        left = 1
+        right = max(piles)
+        while left < right:
+            mid = left + (right - left) // 2
+            if can_finish(piles, h, mid):
+                right = mid
+            else:
+                left = mid + 1
+        return left
+
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
