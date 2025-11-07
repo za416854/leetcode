@@ -535,6 +535,40 @@ class Solution:
             else:
                 left = mid + 1
         return left
+    # 17. Letter Combinations of a Phone Number
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+
+        # 1️⃣ 數字到字母的映射表（模擬電話鍵盤）
+        mapping = {
+            '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+            '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+        }
+
+        res = []  # 用來存最終結果
+
+        # 2️⃣ 定義遞迴函數（DFS + 回朔）
+        def backtrack(index, path):
+            # Base case：如果處理完所有數字 → 收集結果
+            if index == len(digits):
+                res.append("".join(path))
+                return
+
+            # 取得當前數字對應的所有字母
+            possible_letters = mapping[digits[index]]
+
+            # 對每個可能字母進行遞迴
+            for ch in possible_letters:
+                # 譬如: path = ['a', 'e'] =>  res.append("ae") =>  path.pop()  # 回朔，變回 ['a']
+                path.append(ch)           # ➕ 選擇（往下一層）
+                backtrack(index + 1, path)  # 🔁 遞迴
+                path.pop()                # ➖ 回朔（回上一層）
+
+        # 3️⃣ 從第 0 個數字開始
+        backtrack(0, [])
+
+        return res
 
 
 # 2336. Smallest Number in Infinite Set
