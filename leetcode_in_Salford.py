@@ -535,6 +535,7 @@ class Solution:
             else:
                 left = mid + 1
         return left
+
     # 17. Letter Combinations of a Phone Number
     def letterCombinations(self, digits: str) -> List[str]:
         if not digits:
@@ -542,8 +543,14 @@ class Solution:
 
         # 1️⃣ 數字到字母的映射表（模擬電話鍵盤）
         mapping = {
-            '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
-            '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
         }
 
         res = []  # 用來存最終結果
@@ -561,18 +568,20 @@ class Solution:
             # 對每個可能字母進行遞迴
             for ch in possible_letters:
                 # 譬如: path = ['a', 'e'] =>  res.append("ae") =>  path.pop()  # 回朔，變回 ['a']
-                path.append(ch)           # ➕ 選擇（往下一層）
+                path.append(ch)  # ➕ 選擇（往下一層）
                 backtrack(index + 1, path)  # 🔁 遞迴
-                path.pop()                # ➖ 回朔（回上一層）
+                path.pop()  # ➖ 回朔（回上一層）
 
         # 3️⃣ 從第 0 個數字開始
         backtrack(0, [])
 
         return res
+
     # 216. Combination Sum III
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         res = []
-        def dfs(start:int, path: List, remain:int):
+
+        def dfs(start: int, path: List, remain: int):
             if remain == 0 and len(path) == k:
                 res.append(path[:])
                 return
@@ -582,12 +591,30 @@ class Solution:
                 path.append(i)
                 dfs(i + 1, path, remain - i)
                 path.pop()
+
         dfs(1, [], n)
         return res
-        
-        
-        
-        
+
+    # 1137. N-th Tribonacci Number
+    def tribonacci(self, n: int) -> int:
+        # 🧩 Step 1: 處理基礎情況
+        if n == 0:
+            return 0
+        if n == 1 or n == 2:
+            return 1
+
+        # 🧠 Step 2: 初始化前三項 (T0, T1, T2)
+        a, b, c = 0, 1, 1
+
+        # 🚀 Step 3: 從第3項開始一路往上算到第n項
+        for i in range(3, n + 1):
+            a, b, c = b, c, a + b + c  # 同時更新三個值 (Tn-3, Tn-2, Tn-1 → Tn)
+
+        # ✅ Step 4: 回傳最新的 c，也就是 Tn
+        return c
+        #  最後筆記: 所以DP就是比recur好的地方就是，他可以藉由儲存已經做過的事情記錄在變數裡面，以減少後續重複地計算的精神
+
+
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
 
