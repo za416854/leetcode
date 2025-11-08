@@ -571,8 +571,19 @@ class Solution:
         return res
     # 216. Combination Sum III
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        
-        
+        res = []
+        def dfs(start:int, path: List, remain:int):
+            if remain == 0 and len(path) == k:
+                res.append(path[:])
+                return
+            if remain < 0 or len(path) > k:
+                return
+            for i in range(start, 10):
+                path.append(i)
+                dfs(i + 1, path, remain - i)
+                path.pop()
+        dfs(1, [], n)
+        return res
         
         
         
