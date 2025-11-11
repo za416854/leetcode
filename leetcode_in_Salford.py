@@ -647,7 +647,7 @@ class Solution:
             curr2, curr1 = curr1, res
         return curr1
 
-    # 198. House Robber
+    # 198. House Robber 
     def rob(self, nums: List[int]) -> int:
         # bk track solution also brute-force solution
         # n = len(nums)
