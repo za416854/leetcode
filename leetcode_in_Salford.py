@@ -613,7 +613,16 @@ class Solution:
         # ✅ Step 4: 回傳最新的 c，也就是 Tn
         return c
         #  最後筆記: 所以DP就是比recur好的地方就是，他可以藉由儲存已經做過的事情記錄在變數裡面，以減少後續重複地計算的精神
-
+    # 這是1137. N-th Tribonacci Number 的recursion寫法
+    def tribonacci(self, n: int, memo={}) -> int:
+        if n in memo:
+            return memo[n]
+        if n == 0:
+            return 0
+        if n == 1 or n == 2:
+            return 1
+        memo[n] = tribonacci(n-1, memo) + tribonacci(n-2, memo) + tribonacci(n-3, memo)
+        return memo[n] 
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
