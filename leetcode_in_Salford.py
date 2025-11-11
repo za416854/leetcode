@@ -613,6 +613,7 @@ class Solution:
         # ✅ Step 4: 回傳最新的 c，也就是 Tn
         return c
         #  最後筆記: 所以DP就是比recur好的地方就是，他可以藉由儲存已經做過的事情記錄在變數裡面，以減少後續重複地計算的精神
+
     # 這是1137. N-th Tribonacci Number 的recursion寫法
     def tribonacci(self, n: int, memo={}) -> int:
         if n in memo:
@@ -621,8 +622,63 @@ class Solution:
             return 0
         if n == 1 or n == 2:
             return 1
-        memo[n] = tribonacci(n-1, memo) + tribonacci(n-2, memo) + tribonacci(n-3, memo)
-        return memo[n] 
+        memo[n] = (
+            tribonacci(n - 1, memo) + tribonacci(n - 2, memo) + tribonacci(n - 3, memo)
+        )
+        return memo[n]
+
+    # 746. Min Cost Climbing Stairs
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        # bk track solution also brute-force solution
+        n = len(cost)
+        # def dfs(i):
+        #     if i >= n:
+        #         return 0
+        #     one = cost[i] + dfs(i + 1)
+        #     two = cost[i] + dfs(i + 2)
+        #     return min(one, two)
+        # return min(dfs(0), dfs(1))
+
+        # DP solution
+        # 思維其實不是到n -1 階所付出的cost，而是 第n階所付出的cost(會超出陣列index)。然後初始站在第0 跟1 階不算任何的費用，踏出去才算費用
+        curr2, curr1 = 0, 0
+        for i in range(2, len(cost) + 1):
+            res = min(curr2 + cost[i - 2], curr1 + cost[i - 1])
+            curr2, curr1 = curr1, res
+        return curr1
+
+    # 198. House Robber
+    def rob(self, nums: List[int]) -> int:
+        # bk track solution also brute-force solution
+        # n = len(nums)
+        # def dfs(i: int):
+        #     if i >= n:
+        #         return 0
+        #     skip = dfs(i + 1)
+        #     curr = nums[i] + dfs(i + 2)
+        #     return max(skip, curr)
+        # return dfs(0)
+        curr1, curr2 = 0, 0
+        for num in nums:
+            res = max(curr1, curr2 + num)
+            curr2, curr1 = curr1, res
+        return curr1
+
+    # 790. Domino and Tromino Tiling
+    def numTilings(self, n: int) -> int:
+        MOD = 10**9 + 7
+        if n <= 2:
+            return n
+        if n == 3:
+            return 5
+        dp = [0] * (n + 1)
+        dp[1], dp[2], dp[3] = 1, 2, 5
+        for i in range(4, n + 1):
+            # 這題非常難，若忘了要再去看推導的公式 https://leetcode.com/problems/domino-and-tromino-tiling/solutions/116581/detail-and-explanation-of-on-solution-wh-npb4/?envType=study-plan-v2&envId=leetcode-75
+            # 才會對這邊得出來的該簡化公式的結果有較清楚的認識
+            dp[i] = (2 * dp[i - 1] + dp[i - 3]) % MOD
+        return dp[n]
+
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
