@@ -664,7 +664,7 @@ class Solution:
             curr2, curr1 = curr1, res
         return curr1
 
-    # 790. Domino and Tromino Tiling
+    # 790. Domino and Tromino Tiling 
     def numTilings(self, n: int) -> int:
         MOD = 10**9 + 7
         if n <= 2:
