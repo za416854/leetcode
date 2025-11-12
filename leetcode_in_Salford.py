@@ -647,7 +647,7 @@ class Solution:
             curr2, curr1 = curr1, res
         return curr1
 
-    # 198. House Robber 
+    # 198. House Robber
     def rob(self, nums: List[int]) -> int:
         # bk track solution also brute-force solution
         # n = len(nums)
@@ -664,7 +664,7 @@ class Solution:
             curr2, curr1 = curr1, res
         return curr1
 
-    # 790. Domino and Tromino Tiling 
+    # 790. Domino and Tromino Tiling
     def numTilings(self, n: int) -> int:
         MOD = 10**9 + 7
         if n <= 2:
@@ -678,6 +678,40 @@ class Solution:
             # 才會對這邊得出來的該簡化公式的結果有較清楚的認識
             dp[i] = (2 * dp[i - 1] + dp[i - 3]) % MOD
         return dp[n]
+
+    # 62. Unique Paths
+    def uniquePaths(self, m: int, n: int) -> int:
+        # 等價寫法
+        # 1.
+        # dp = [[0 for _ in range(n)] for _ in range(m)]
+        # 2.
+        # dp = []
+        # for _ in range(m):
+        #     row = []
+        #     for _ in range(n):
+        #         row.append(0)
+        #     dp.append(row)
+        # 創建一個 m x n 的 DP 表格
+        dp = [[0] * n for _ in range(m)]
+    
+        # 1. KRIS:要先處理邊界條件 (第一行和第一列)
+        # 如果在第一行或第一列，「選擇」是不是就只有一條路？
+        # 第一行 (i=0) 只能從左邊到達，所以都是 1
+        for j in range(n):
+            dp[0][j] = 1
+            
+        # 第一列 (j=0) 只能從上方到達，所以都是 1
+        for i in range(m):
+            dp[i][0] = 1
+            
+        # 2. 應用遞歸關係
+        for i in range(1, m):
+            for j in range(1, n):
+                # KRIS:這題用結果去想的話就是，結尾終點dp[m-1][n-1]一定是 來自上方 (dp[i-1][j])的所有可能 +上 來自左方 (dp[i][j-1])的所有可能
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+                
+        # 3. 返回右下角的最終結果
+        return dp[m-1][n-1]
 
 
 # 2336. Smallest Number in Infinite Set
