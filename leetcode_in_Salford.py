@@ -613,7 +613,9 @@ class Solution:
         # ✅ Step 4: 回傳最新的 c，也就是 Tn
         return c
         #  最後筆記: 所以DP就是比recur好的地方就是，他可以藉由儲存已經做過的事情記錄在變數裡面，以減少後續重複地計算的精神
-
+    
+    
+    # DP - 1D
     # 這是1137. N-th Tribonacci Number 的recursion寫法
     def tribonacci(self, n: int, memo={}) -> int:
         if n in memo:
@@ -678,7 +680,8 @@ class Solution:
             # 才會對這邊得出來的該簡化公式的結果有較清楚的認識
             dp[i] = (2 * dp[i - 1] + dp[i - 3]) % MOD
         return dp[n]
-
+    
+    # DP - Multidimensional
     # 62. Unique Paths
     def uniquePaths(self, m: int, n: int) -> int:
         # 等價寫法
@@ -802,8 +805,22 @@ class Solution:
                     )
         # 3. 返回最終答案
         return dp[m][n]
-            
-            
+    
+    # Bit Manipulation
+    # 338. Counting Bits
+    def countBits(self, n: int) -> List[int]:  
+        # 這題還是DP的思維，因為偶數尾數永遠是0，奇數永遠是1，所以用這種退一位的dp方式慢慢得到越大數字的1的個數
+        # 這題不用先給base case, 因為就是從dp[0] 慢慢開始往後面去做運算
+        dp = [0] * (n + 1)
+
+        # 從 i=1 開始循環到 n
+        for i in range(1, n + 1):
+            # 應用遞歸關係 (Bottom-Up 實現)
+            # i >> 1: dp查詢先前已經有的 i/2 的結果(無條件捨去) (即 i 的二進位去掉最右邊一位)
+            # i & 1: 檢查 i 的最右邊一位是否為 1(是否為odd number)
+            dp[i] = dp[i >> 1] + (i & 1)
+
+        return dp
         
         
         
