@@ -793,7 +793,8 @@ class Solution:
                     dp[i][j] = dp[i-1][j-1]
                 else:
                     # 情況 B: 字元不匹配，取三種操作的最小值 + 1
-                    # 其實這題最難的是要想要怎麼思考出來把題目給的三個動作Replace, Delete, Insert變成二維的表格這件事，橫軸表示刪除i, 縱軸表示插入j，還有替換這個case(但因為替換就是dp[i-1][j-1] +1 所以不會多創一個軸來表示)
+                    # 其實這題最難的是要想要怎麼思考出來把題目給的三個動作Replace, Delete, Insert變成二維的表格這件事，橫軸表示刪除i, 縱軸表示插入j，還有替換這個case(但因為替換就是dp[i-1][j-1] +1 所以是用對角線來表示)
+                    # Delete 從上方來、Insert 從左方來、Replace 從左上方來。
                     dp[i][j] = 1 + min(
                         dp[i-1][j-1],  # 替換 (Replace)
                         dp[i-1][j],    # 刪除 (Delete)
