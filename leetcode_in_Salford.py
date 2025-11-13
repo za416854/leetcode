@@ -713,7 +713,7 @@ class Solution:
         # 3. 返回右下角的最終結果
         return dp[m - 1][n - 1]
 
-    # 1143. Longest Common Subsequence
+    # 1143. Longest Common Subsequence 
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         # 暴力解: DFS + bk track
         # n1 = len(text1)
