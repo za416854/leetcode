@@ -821,10 +821,50 @@ class Solution:
             dp[i] = dp[i >> 1] + (i & 1)
 
         return dp
+    # 136. Single Number
+    def singleNumber(self, nums: List[int]) -> int:
+        # 字典統計頻率  
+        # dic = dict()
+        # for num in nums:
+        #     if num not in dic.keys():
+        #         dic[num] = 1
+        #     else:
+        #         dic[num] += 1
+        # res = 0
+        # for k, v in dic.items():
+        #     if v == 1:
+        #         res = k
+        # return res
         
+        # 這個解法就是用到XOR( ^ 符號)概念，也就是兩個一樣的數的二進位，譬如說1101 and 1101 ，會互相抵銷變為0(可以看手寫筆記介紹XOR)，最後rturn 剩下來的數字就是了
+        res = 0
+        for num in nums:
+            res ^= num
+        return res
+    # 1318. Minimum Flips to Make a OR b Equal to c
+    def minFlips(self, a: int, b: int, c: int) -> int:
+        # 這題要瞭解的是，a、b、c 在『同一個 bit 位置』上會有 8 種組合，因此用 a,b,c  & 1 拿到尾數二進位，再逐一比較，但因為這題有規定要讓 (a OR b) 等於 c ，所以
+        flips = 0
+        # c 有可能比a 或 b 小，所以一定要等到每個都為0才可以終止迴圈
+        while a > 0 or b > 0 or c > 0:
+            a_bit = a & 1
+            b_bit = b & 1
+            c_bit = c & 1
+            # 第一種情況: c_bit == 0 表示 a_bit == 1 就要翻一次， b_bit == 1 也要翻一次(OR 代表要兩個都是0才是0)，所以就flips += a_bit + b_bit就很直觀
+            if c_bit == 0:
+                flips += a_bit + b_bit
+            # c_bit == 1 的話，就是只要a_bit == 0 and b_bit == 0才會需要翻成1，其中一個為1就沒差繼續往下
+            else:
+                if a_bit == 0 and b_bit == 0:
+                    flips += 1
+            # 往右推一格
+            a >>= 1
+            b >>= 1
+            c >>= 1
+            
+        return flips
         
-        
-        
+            
         
         
         
