@@ -623,7 +623,7 @@ class Solution:
         if n == 1 or n == 2:
             return 1
         memo[n] = (
-            tribonacci(n - 1, memo) + tribonacci(n - 2, memo) + tribonacci(n - 3, memo)
+            self.tribonacci(n - 1, memo) + self.tribonacci(n - 2, memo) + self.tribonacci(n - 3, memo)
         )
         return memo[n]
 
@@ -769,9 +769,47 @@ class Solution:
             # 不賣 cash : 我昨天就沒持股，今天繼續保持沒持股- v.s. 賣掉股票hold + price - fee: 我昨天有持股，今天把股票賣掉
             cash = max(cash, hold + price - fee)
             # 不買 hold : 昨天就持股，今天繼續持股。 買入股票 cash - price: 昨天沒持股，今天花錢買股票
-            hold = max(hold, cash - price)
+            hold = max(hold, cash -  price)
         return cash
-
+    # 72. Edit Distance
+    def minDistance(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+        # 創建 (m+1) x (n+1) 的 DP 表格
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        # 1. 初始化邊界條件 (Base Cases) 
+        # dp[i][0]：若word2為空字串，則word1需要刪除最多m次，以跟word2一致
+        for i in range(m + 1):
+            dp[i][0] = i
+        # dp[0][j]：若word1為空字串，則word1需要插入最多n次，以跟word2一致
+        for j in range(n + 1):
+            dp[0][j] = j
+        # 2. 填充表格
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                
+                # 比較當前字元 (注意索引 i-1, j-1)
+                if word1[i-1] == word2[j-1]:
+                    # 情況 A: 字元匹配，距離等於左上方 (不需操作)
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    # 情況 B: 字元不匹配，取三種操作的最小值 + 1
+                    # 其實這題最難的是要想要怎麼思考出來把題目給的三個動作Replace, Delete, Insert變成二維的表格這件事，橫軸表示刪除i, 縱軸表示插入j，還有替換這個case(但因為替換就是dp[i-1][j-1] +1 所以不會多創一個軸來表示)
+                    dp[i][j] = 1 + min(
+                        dp[i-1][j-1],  # 替換 (Replace)
+                        dp[i-1][j],    # 刪除 (Delete)
+                        dp[i][j-1]     # 插入 (Insert)
+                    )
+        # 3. 返回最終答案
+        return dp[m][n]
+            
+            
+        
+        
+        
+        
+        
+        
+        
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
 
