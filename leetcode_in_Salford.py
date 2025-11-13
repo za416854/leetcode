@@ -693,26 +693,84 @@ class Solution:
         #     dp.append(row)
         # 創建一個 m x n 的 DP 表格
         dp = [[0] * n for _ in range(m)]
-    
+
         # 1. KRIS:要先處理邊界條件 (第一行和第一列)
         # 如果在第一行或第一列，「選擇」是不是就只有一條路？
         # 第一行 (i=0) 只能從左邊到達，所以都是 1
         for j in range(n):
             dp[0][j] = 1
-            
+
         # 第一列 (j=0) 只能從上方到達，所以都是 1
         for i in range(m):
             dp[i][0] = 1
-            
+
         # 2. 應用遞歸關係
         for i in range(1, m):
             for j in range(1, n):
                 # KRIS:這題用結果去想的話就是，結尾終點dp[m-1][n-1]一定是 來自上方 (dp[i-1][j])的所有可能 +上 來自左方 (dp[i][j-1])的所有可能
-                dp[i][j] = dp[i-1][j] + dp[i][j-1]
-                
-        # 3. 返回右下角的最終結果
-        return dp[m-1][n-1]
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
 
+        # 3. 返回右下角的最終結果
+        return dp[m - 1][n - 1]
+
+    # 1143. Longest Common Subsequence
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        # 暴力解: DFS + bk track
+        # n1 = len(text1)
+        # n2 = len(text2)
+        # def dfs(i, j):
+        #     if i == n1 and j == n2:
+        #         return 0
+        #     if text1[i] == text2[j]:
+        #         return 1 + dfs(i + 1, j + 1)
+        #     else:
+        #         # 若不同 → 嘗試跳過任一方，取最大值
+        #         skipA = dfs(i + 1, j)
+        #         skipB = dfs(i, j + 1)
+        #         return max(skipA, skipB)
+        # return dfs(0, 0)
+        
+        # DP 1
+        # memo = dict()
+        # n1 = len(text1)
+        # n2 = len(text2)
+
+        # def dfs(i, j):
+        #     if (i, j) in memo:
+        #         return memo[(i, j)]
+        #     if i == n1 or j == n2:
+        #         return 0
+        #     if text1[i] == text2[j]:
+        #         memo[(i, j)] = 1 + dfs(i + 1, j + 1)
+        #     else:
+        #         memo[(i, j)] = max(dfs(i + 1, j), dfs(i, j + 1))
+        #     return memo[(i, j)]
+
+        # return dfs(0, 0)
+        # DP 2 最推薦
+        m = len(text1)
+        n = len(text2)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if text1[i - 1] == text2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    # max意義是: 若當前字母不一致，要取出上面位置前一個 跟左邊位置前一個 比較大的值放當前，繼續堆疊出結果(GPT範例圖片看到就一目了然，若忘了可以請AI產)
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        return dp[m][n]
+
+    # 714. Best Time to Buy and Sell Stock with Transaction Fee
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        # 這題核心不是要去保存買了之後怎樣然後往後面推算或是賣了之後怎樣往後推算，這比較偏貪心的思維
+        # 這題是要用DP的思維下去思考，是要每天記錄賣/不賣，買/不買的結果，然後最後return 最優的cash(因為最後還是要賣掉得到最大獲利)
+        cash, hold = 0, -prices[0]
+        for price in prices[1:]:
+            # 不賣 cash : 我昨天就沒持股，今天繼續保持沒持股- v.s. 賣掉股票hold + price - fee: 我昨天有持股，今天把股票賣掉
+            cash = max(cash, hold + price - fee)
+            # 不買 hold : 昨天就持股，今天繼續持股。 買入股票 cash - price: 昨天沒持股，今天花錢買股票
+            hold = max(hold, cash - price)
+        return cash
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
