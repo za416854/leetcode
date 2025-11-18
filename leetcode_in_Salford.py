@@ -936,7 +936,7 @@ class TrieNode2:
             res.append(suggestions)
         return res
         
-# 1268. Search Suggestions System        
+# 1268. Search Suggestions System         
 class TrieNode2:
     def __init__(self):
         self.children = dict()
