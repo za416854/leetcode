@@ -613,8 +613,7 @@ class Solution:
         # ✅ Step 4: 回傳最新的 c，也就是 Tn
         return c
         #  最後筆記: 所以DP就是比recur好的地方就是，他可以藉由儲存已經做過的事情記錄在變數裡面，以減少後續重複地計算的精神
-    
-    
+
     # DP - 1D
     # 這是1137. N-th Tribonacci Number 的recursion寫法
     def tribonacci(self, n: int, memo={}) -> int:
@@ -625,7 +624,9 @@ class Solution:
         if n == 1 or n == 2:
             return 1
         memo[n] = (
-            self.tribonacci(n - 1, memo) + self.tribonacci(n - 2, memo) + self.tribonacci(n - 3, memo)
+            self.tribonacci(n - 1, memo)
+            + self.tribonacci(n - 2, memo)
+            + self.tribonacci(n - 3, memo)
         )
         return memo[n]
 
@@ -680,7 +681,7 @@ class Solution:
             # 才會對這邊得出來的該簡化公式的結果有較清楚的認識
             dp[i] = (2 * dp[i - 1] + dp[i - 3]) % MOD
         return dp[n]
-    
+
     # DP - Multidimensional
     # 62. Unique Paths
     def uniquePaths(self, m: int, n: int) -> int:
@@ -716,7 +717,7 @@ class Solution:
         # 3. 返回右下角的最終結果
         return dp[m - 1][n - 1]
 
-    # 1143. Longest Common Subsequence 
+    # 1143. Longest Common Subsequence
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         # 暴力解: DFS + bk track
         # n1 = len(text1)
@@ -732,7 +733,7 @@ class Solution:
         #         skipB = dfs(i, j + 1)
         #         return max(skipA, skipB)
         # return dfs(0, 0)
-        
+
         # DP 1
         # memo = dict()
         # n1 = len(text1)
@@ -763,7 +764,7 @@ class Solution:
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
         return dp[m][n]
 
-    # 714. Best Time to Buy and Sell Stock with Transaction Fee 
+    # 714. Best Time to Buy and Sell Stock with Transaction Fee
     def maxProfit(self, prices: List[int], fee: int) -> int:
         # 這題核心不是要去保存買了之後怎樣然後往後面推算或是賣了之後怎樣往後推算，這比較偏貪心的思維
         # 這題是要用DP的思維下去思考，是要每天記錄賣/不賣，買/不買的結果，然後最後return 最優的cash(因為最後還是要賣掉得到最大獲利)
@@ -772,14 +773,15 @@ class Solution:
             # 不賣 cash : 我昨天就沒持股，今天繼續保持沒持股- v.s. 賣掉股票hold + price - fee: 我昨天有持股，今天把股票賣掉
             cash = max(cash, hold + price - fee)
             # 不買 hold : 昨天就持股，今天繼續持股。 買入股票 cash - price: 昨天沒持股，今天花錢買股票
-            hold = max(hold, cash -  price)
+            hold = max(hold, cash - price)
         return cash
+
     # 72. Edit Distance
     def minDistance(self, word1: str, word2: str) -> int:
         m, n = len(word1), len(word2)
         # 創建 (m+1) x (n+1) 的 DP 表格
         dp = [[0] * (n + 1) for _ in range(m + 1)]
-        # 1. 初始化邊界條件 (Base Cases) 
+        # 1. 初始化邊界條件 (Base Cases)
         # dp[i][0]：若word2為空字串，則word1需要刪除最多m次，以跟word2一致
         for i in range(m + 1):
             dp[i][0] = i
@@ -789,26 +791,26 @@ class Solution:
         # 2. 填充表格
         for i in range(1, m + 1):
             for j in range(1, n + 1):
-                
+
                 # 比較當前字元 (注意索引 i-1, j-1)
-                if word1[i-1] == word2[j-1]:
+                if word1[i - 1] == word2[j - 1]:
                     # 情況 A: 字元匹配，距離等於左上方 (不需操作)
-                    dp[i][j] = dp[i-1][j-1]
+                    dp[i][j] = dp[i - 1][j - 1]
                 else:
                     # 情況 B: 字元不匹配，取三種操作的最小值 + 1
                     # 其實這題最難的是要想要怎麼思考出來把題目給的三個動作Replace, Delete, Insert變成二維的表格這件事，橫軸表示刪除i, 縱軸表示插入j，還有替換這個case(但因為替換就是dp[i-1][j-1] +1 所以是用對角線來表示)
                     # Delete 從上方來、Insert 從左方來、Replace 從左上方來。
                     dp[i][j] = 1 + min(
-                        dp[i-1][j-1],  # 替換 (Replace)
-                        dp[i-1][j],    # 刪除 (Delete)
-                        dp[i][j-1]     # 插入 (Insert)
+                        dp[i - 1][j - 1],  # 替換 (Replace)
+                        dp[i - 1][j],  # 刪除 (Delete)
+                        dp[i][j - 1],  # 插入 (Insert)
                     )
         # 3. 返回最終答案
         return dp[m][n]
-    
+
     # Bit Manipulation
     # 338. Counting Bits
-    def countBits(self, n: int) -> List[int]:  
+    def countBits(self, n: int) -> List[int]:
         # 這題還是DP的思維，因為偶數尾數永遠是0，奇數永遠是1，所以用這種退一位的dp方式慢慢得到越大數字的1的個數
         # 這題不用先給base case, 因為就是從dp[0] 慢慢開始往後面去做運算
         dp = [0] * (n + 1)
@@ -821,9 +823,10 @@ class Solution:
             dp[i] = dp[i >> 1] + (i & 1)
 
         return dp
+
     # 136. Single Number
     def singleNumber(self, nums: List[int]) -> int:
-        # 字典統計頻率  
+        # 字典統計頻率
         # dic = dict()
         # for num in nums:
         #     if num not in dic.keys():
@@ -835,12 +838,13 @@ class Solution:
         #     if v == 1:
         #         res = k
         # return res
-        
+
         # 這個解法就是用到XOR( ^ 符號)概念，也就是兩個一樣的數的二進位，譬如說1101 and 1101 ，會互相抵銷變為0(可以看手寫筆記介紹XOR)，最後rturn 剩下來的數字就是了
         res = 0
         for num in nums:
             res ^= num
         return res
+
     # 1318. Minimum Flips to Make a OR b Equal to c
     def minFlips(self, a: int, b: int, c: int) -> int:
         # 這題要瞭解的是，a、b、c 在『同一個 bit 位置』上會有 8 種組合，因此用 a,b,c  & 1 拿到尾數二進位，再逐一比較，但因為這題有規定要讓 (a OR b) 等於 c ，所以
@@ -861,13 +865,11 @@ class Solution:
             a >>= 1
             b >>= 1
             c >>= 1
-            
+
         return flips
-        
-            
-        
-        
-        
+
+    
+
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
 
@@ -890,8 +892,82 @@ class SmallestInfiniteSet:
         if num < self.current and num not in self.added:
             heapq.heappush(self.heap, num)
             self.added.add(num)
+# 208. Implement Trie (Prefix Tree)            
+class TrieNode2:
 
+    def __init__(self):
+        self.root = Trienode()
 
+    def insert(self, word: str) -> None:
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                node.children[ch] = Trienode()
+            node = node.children[ch]
+        node.isWord = True
+        
+    def search(self, word: str) -> bool:
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                return False
+            node = node.children[ch]
+        return node.isWord
+
+    def startsWith(self, prefix: str) -> bool:
+        node = self.root
+        for ch in prefix:
+            if ch not in node.children:
+                return False
+            node = node.children[ch]
+        return True
+    # 1268. Search Suggestions System
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        products.sort()
+        trie = Trie()
+        for p in products:
+            trie.insert(p) 
+
+        res = []
+        prefix = ""
+        for ch in searchWord:
+            prefix += ch
+            suggestions = trie.searchPrefix(prefix)
+            res.append(suggestions)
+        return res
+        
+# 1268. Search Suggestions System        
+class TrieNode2:
+    def __init__(self):
+        self.children = dict()
+        self.suggestions = []
+# 1268. Search Suggestions System
+class Trie():
+    def __init__(self):
+        self.root = TrieNode2()
+    
+    def insert(self, word: str):
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                node.children[ch] = TrieNode2()
+            
+            node = node.children[ch]
+            if len(node.suggestions) < 3:
+                node.suggestions.append(word)    
+    def searchPrefix(self, word: str):
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                return []
+            node = node.children[ch]
+        return node.suggestions
+            
+        
+class Trienode:
+    def __init__(self):
+        self.children = dict()
+        self.isWord = False
 if __name__ == "__main__":
     # Create a binary tree
     root = TreeNode(1)
