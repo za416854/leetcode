@@ -867,8 +867,33 @@ class Solution:
             c >>= 1
 
         return flips
-
     
+    # Monotonic Stack
+    # 739. Daily Temperatures
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        res = [0] * len(temperatures)
+        stack = []
+        for i, temp in enumerate(temperatures):
+            while stack and temp > temperatures[stack[-1]]:
+                prev = stack.pop()
+                res[prev] = i - prev
+            stack.append(i)
+        return res
+
+# Monotonic Stack        
+# 901. Online Stock Span        
+class StockSpanner:
+
+    def __init__(self):
+        self.stack = []
+
+    def next(self, price: int) -> int:
+        span = 1
+        while self.stack and  self.stack[-1][0] <= price:
+            curr_price, curr_span = self.stack.pop()
+            span += curr_span
+        self.stack.append((price, span))
+        return span    
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
