@@ -880,7 +880,7 @@ class Solution:
             stack.append(i)
         return res
 
-# Monotonic Stack        
+# Monotonic Stack 
 # 901. Online Stock Span        
 class StockSpanner:
 
