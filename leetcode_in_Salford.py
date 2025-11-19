@@ -869,7 +869,7 @@ class Solution:
         return flips
     
     # Monotonic Stack
-    # 739. Daily Temperatures
+    # 739. Daily Temperatures 
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         res = [0] * len(temperatures)
         stack = []
