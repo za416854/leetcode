@@ -960,7 +960,47 @@ class TrieNode2:
             suggestions = trie.searchPrefix(prefix)
             res.append(suggestions)
         return res
+    # 1768. Merge Strings Alternately
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        res = ""
+        i = 0
+        j = 0
+        while i < len(word1) or j < len(word2):
+            if i < len(word1) and j < len(word2):
+                res += word1[i]
+                res += word2[j]
+                i += 1
+                j += 1
+            elif i >= len(word1) and j < len(word2):
+                res += word2[j]
+                j+=1
+            else:
+                res += word1[i]
+                i+=1
+        return res
+    # 151. Reverse Words in a String
+    def reverseWords(self, s: str) -> str:
+        words = s.split()
+        # 這裡reverse return None所以不用放var在等號左邊
+        words.reverse()
+        return " ".join(words)
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        res = [1] * len(nums)
+        curr_L = 1
+        for i in range(len(nums)):
+            # j = i + 1
+            res[i] = curr_L
+            curr_L = curr_L * nums[i]
+        # for i in reversed(range(len(nums))):
+        curr_R = 1
+        for i in range(len(nums)-1, -1, -1):
+            res[i] *= curr_R
+            curr_R = curr_R * nums[i]
+        return res
+                
+            
         
+                
 # 1268. Search Suggestions System         
 class TrieNode2:
     def __init__(self):
