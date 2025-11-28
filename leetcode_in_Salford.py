@@ -960,7 +960,7 @@ class TrieNode2:
             suggestions = trie.searchPrefix(prefix)
             res.append(suggestions)
         return res
-    # 1768. Merge Strings Alternately
+    # 1768. Merge Strings Alternately 
     def mergeAlternately(self, word1: str, word2: str) -> str:
         res = ""
         i = 0
