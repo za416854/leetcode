@@ -984,6 +984,7 @@ class TrieNode2:
         # 這裡reverse return None所以不用放var在等號左邊
         words.reverse()
         return " ".join(words)
+    # 238. Product of Array Except Self
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         res = [1] * len(nums)
         curr_L = 1
