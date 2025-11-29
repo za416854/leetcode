@@ -990,7 +990,7 @@ class TrieNode2:
         curr_L = 1
         for i in range(len(nums)):
             # j = i + 1
-            res[i] = curr_L
+            res[i] *= curr_L
             curr_L = curr_L * nums[i]
         # for i in reversed(range(len(nums))):
         curr_R = 1
