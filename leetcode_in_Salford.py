@@ -867,9 +867,9 @@ class Solution:
             c >>= 1
 
         return flips
-    
+
     # Monotonic Stack
-    # 739. Daily Temperatures 
+    # 739. Daily Temperatures
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         res = [0] * len(temperatures)
         stack = []
@@ -880,8 +880,9 @@ class Solution:
             stack.append(i)
         return res
 
-# Monotonic Stack 
-# 901. Online Stock Span        
+
+# Monotonic Stack
+# 901. Online Stock Span
 class StockSpanner:
 
     def __init__(self):
@@ -889,11 +890,12 @@ class StockSpanner:
 
     def next(self, price: int) -> int:
         span = 1
-        while self.stack and  self.stack[-1][0] <= price:
+        while self.stack and self.stack[-1][0] <= price:
             curr_price, curr_span = self.stack.pop()
             span += curr_span
         self.stack.append((price, span))
-        return span    
+        return span
+
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
@@ -917,7 +919,117 @@ class SmallestInfiniteSet:
         if num < self.current and num not in self.added:
             heapq.heappush(self.heap, num)
             self.added.add(num)
-# 208. Implement Trie (Prefix Tree)            
+
+    # 1268. Search Suggestions System
+    def suggestedProducts(
+        self, products: List[str], searchWord: str
+    ) -> List[List[str]]:
+        products.sort()
+        trie = Trie()
+        for p in products:
+            trie.insert(p)
+
+        res = []
+        prefix = ""
+        for ch in searchWord:
+            prefix += ch
+            suggestions = trie.searchPrefix(prefix)
+            res.append(suggestions)
+        return res
+
+    # 1768. Merge Strings Alternately
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        res = ""
+        i = 0
+        j = 0
+        while i < len(word1) or j < len(word2):
+            if i < len(word1) and j < len(word2):
+                res += word1[i]
+                res += word2[j]
+                i += 1
+                j += 1
+            elif i >= len(word1) and j < len(word2):
+                res += word2[j]
+                j += 1
+            else:
+                res += word1[i]
+                i += 1
+        return res
+
+    # 151. Reverse Words in a String
+    def reverseWords(self, s: str) -> str:
+        words = s.split()
+        # 這裡reverse return None所以不用放var在等號左邊
+        words.reverse()
+        return " ".join(words)
+
+    # 238. Product of Array Except Self
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        res = [1] * len(nums)
+        curr_L = 1
+        for i in range(len(nums)):
+            # j = i + 1
+            res[i] *= curr_L
+            curr_L = curr_L * nums[i]
+        # for i in reversed(range(len(nums))):
+        curr_R = 1
+        for i in range(len(nums) - 1, -1, -1):
+            res[i] *= curr_R
+            curr_R = curr_R * nums[i]
+        return res
+
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        first = float("inf")
+        second = float("inf")
+        for num in nums:
+            if num <= first:
+                first = num
+            elif num <= second:
+                second = num
+            else:
+                return True  # n > second
+        return False
+
+    # 443. String Compression 這題是in-space操作，不能開list額外空間，所以只能用two pointer的方式來操作chars空間，並回傳write指針代表長度
+    def compress(self, chars: List[str]) -> int:
+        length = len(chars)
+        read = 0
+        write = 0
+        while read < length:
+            char_start = read
+            while read < length and chars[read] == chars[char_start]:
+                read += 1
+
+            count = read - char_start
+            chars[write] = chars[char_start]
+            write += 1
+            if count > 1:
+                for ch in str(count):
+                    chars[write] = ch
+                    write += 1
+        return write
+    # 283. Move Zeroes
+    def moveZeroes(self, nums: List[int]) -> None:
+        zero_counter = 0
+        write = 0
+        for num in nums:
+            if num == 0:
+                zero_counter += 1
+            else:
+                nums[write] = num
+                write += 1
+        for i in range(write, len(nums)):
+            nums[i] = 0
+            
+                
+                
+            
+            
+        
+        
+        
+
+# 208. Implement Trie (Prefix Tree)
 class TrieNode2:
 
     def __init__(self):
@@ -930,7 +1042,7 @@ class TrieNode2:
                 node.children[ch] = Trienode()
             node = node.children[ch]
         node.isWord = True
-        
+
     def search(self, word: str) -> bool:
         node = self.root
         for ch in word:
@@ -946,113 +1058,31 @@ class TrieNode2:
                 return False
             node = node.children[ch]
         return True
-    # 1268. Search Suggestions System
-    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
-        products.sort()
-        trie = Trie()
-        for p in products:
-            trie.insert(p) 
 
-        res = []
-        prefix = ""
-        for ch in searchWord:
-            prefix += ch
-            suggestions = trie.searchPrefix(prefix)
-            res.append(suggestions)
-        return res
-    # 1768. Merge Strings Alternately 
-    def mergeAlternately(self, word1: str, word2: str) -> str:
-        res = ""
-        i = 0
-        j = 0
-        while i < len(word1) or j < len(word2):
-            if i < len(word1) and j < len(word2):
-                res += word1[i]
-                res += word2[j]
-                i += 1
-                j += 1
-            elif i >= len(word1) and j < len(word2):
-                res += word2[j]
-                j+=1
-            else:
-                res += word1[i]
-                i+=1
-        return res
-    # 151. Reverse Words in a String
-    def reverseWords(self, s: str) -> str:
-        words = s.split()
-        # 這裡reverse return None所以不用放var在等號左邊
-        words.reverse()
-        return " ".join(words)
-    # 238. Product of Array Except Self
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        res = [1] * len(nums)
-        curr_L = 1
-        for i in range(len(nums)):
-            # j = i + 1
-            res[i] *= curr_L
-            curr_L = curr_L * nums[i]
-        # for i in reversed(range(len(nums))):
-        curr_R = 1
-        for i in range(len(nums)-1, -1, -1):
-            res[i] *= curr_R
-            curr_R = curr_R * nums[i]
-        return res
-    def increasingTriplet(self, nums: List[int]) -> bool:
-        first = float('inf')
-        second = float('inf')
-        for num in nums:
-            if num <= first:
-                first = num
-            elif num <= second:
-                second = num
-            else:
-                return True # n > second
-        return False
-    # 443. String Compression 這題是in-space操作，不能開list額外空間，所以只能用two pointer的方式來操作chars空間，並回傳write指針代表長度
-    def compress(self, chars: List[str]) -> int:
-        length = len(chars)
-        read = 0
-        write = 0
-        while read < length:
-            char_start = read
-            while read < length and chars[read] == chars[char_start]:
-                read += 1
-            
-            count = read - char_start
-            chars[write] = chars[char_start]
-            write += 1
-            if count > 1:
-                for ch in str(count):
-                    chars[write] = ch
-                    write += 1
-        return write
-            
-            
-        
-        
-        
-        
-                
-# 1268. Search Suggestions System         
+
+
+# 1268. Search Suggestions System
 class TrieNode2:
     def __init__(self):
         self.children = dict()
         self.suggestions = []
+
+
 # 1268. Search Suggestions System
-class Trie():
+class Trie:
     def __init__(self):
         self.root = TrieNode2()
-    
+
     def insert(self, word: str):
         node = self.root
         for ch in word:
             if ch not in node.children:
                 node.children[ch] = TrieNode2()
-            
+
             node = node.children[ch]
             if len(node.suggestions) < 3:
-                node.suggestions.append(word)    
+                node.suggestions.append(word)
+
     def searchPrefix(self, word: str):
         node = self.root
         for ch in word:
@@ -1060,15 +1090,14 @@ class Trie():
                 return []
             node = node.children[ch]
         return node.suggestions
-    
-        
-        
-          
-        
+
+
 class Trienode:
     def __init__(self):
         self.children = dict()
         self.isWord = False
+
+
 if __name__ == "__main__":
     # Create a binary tree
     root = TreeNode(1)
