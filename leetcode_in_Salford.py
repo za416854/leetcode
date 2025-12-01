@@ -998,8 +998,40 @@ class TrieNode2:
             res[i] *= curr_R
             curr_R = curr_R * nums[i]
         return res
-                
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        first = float('inf')
+        second = float('inf')
+        for num in nums:
+            if num <= first:
+                first = num
+            elif num <= second:
+                second = num
+            else:
+                return True # n > second
+        return False
+    # 443. String Compression 這題是in-space操作，不能開list額外空間，所以只能用two pointer的方式來操作chars空間，並回傳write指針代表長度
+    def compress(self, chars: List[str]) -> int:
+        length = len(chars)
+        read = 0
+        write = 0
+        while read < length:
+            char_start = read
+            while read < length and chars[read] == chars[char_start]:
+                read += 1
             
+            count = read - char_start
+            chars[write] = chars[char_start]
+            write += 1
+            if count > 1:
+                for ch in str(count):
+                    chars[write] = ch
+                    write += 1
+        return write
+            
+            
+        
+        
+        
         
                 
 # 1268. Search Suggestions System         
@@ -1028,7 +1060,10 @@ class Trie():
                 return []
             node = node.children[ch]
         return node.suggestions
-            
+    
+        
+        
+          
         
 class Trienode:
     def __init__(self):
