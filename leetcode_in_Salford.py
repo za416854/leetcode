@@ -1060,7 +1060,23 @@ class SmallestInfiniteSet:
             else:
                 right -= 1
         return maxVolme
-                
+    # 1679. Max Number of K-Sum Pairs 這題要記得排序
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        counter = 0
+        left = 0 
+        right = len(nums) - 1 
+        while left < right:
+            sum = nums[left] + nums[right]
+            if sum == k:
+                left += 1
+                right -= 1
+                counter += 1
+            elif sum < k:
+                left += 1
+            else:
+                right -= 1
+        return counter
             
             
         
