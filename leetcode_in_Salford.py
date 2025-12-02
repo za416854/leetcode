@@ -1008,6 +1008,7 @@ class SmallestInfiniteSet:
                     chars[write] = ch
                     write += 1
         return write
+
     # 283. Move Zeroes
     def moveZeroes(self, nums: List[int]) -> None:
         zero_counter = 0
@@ -1020,7 +1021,8 @@ class SmallestInfiniteSet:
                 write += 1
         for i in range(write, len(nums)):
             nums[i] = 0
-    # 392. Is Subsequence    
+
+    # 392. Is Subsequence
     def isSubsequence(self, s: str, t: str) -> bool:
         s_index = 0
         t_index = 0
@@ -1029,26 +1031,27 @@ class SmallestInfiniteSet:
                 s_index += 1
             t_index += 1
         return True if s_index == len(s) else False
+
     # 11. Container With Most Water
     def maxArea(self, height: List[int]) -> int:
         left = 0
-        right = len(height) -1
+        right = len(height) - 1
         max_val = 0
         while left < right:
             width = right - left
             curr_val = 0
             if height[left] > height[right]:
-                curr_val  = height[right] * width
+                curr_val = height[right] * width
                 right -= 1
             else:
-                curr_val  =  height[left] * width
+                curr_val = height[left] * width
                 left += 1
             if curr_val > max_val:
                 max_val = curr_val
         return max_val
         # another solution
         left = 0
-        right = len(height) -1
+        right = len(height) - 1
         maxVolme = 0
         while left < right:
             currHeight = min(height[left], height[right])
@@ -1060,12 +1063,13 @@ class SmallestInfiniteSet:
             else:
                 right -= 1
         return maxVolme
+
     # 1679. Max Number of K-Sum Pairs 這題要記得排序
     def maxOperations(self, nums: List[int], k: int) -> int:
         nums.sort()
         counter = 0
-        left = 0 
-        right = len(nums) - 1 
+        left = 0
+        right = len(nums) - 1
         while left < right:
             sum = nums[left] + nums[right]
             if sum == k:
@@ -1077,8 +1081,37 @@ class SmallestInfiniteSet:
             else:
                 right -= 1
         return counter
-            
-            
+    # 643. Maximum Average Subarray I
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # 該解法 TLE
+        # if k == 1:
+        #     return nums[0]
+        # start = 0
+        # end = start + k
+        # length = len(nums)
+        # max_num = 0
+        # while end < length:
+        #     curr_num = 0
+        #     for i in range(start, end, 1):
+        #         curr_num += nums[i]
+        #     curr_num = curr_num / k
+        #     if curr_num > max_num:
+        #         max_num = curr_num
+        #     start += 1
+        #     end += 1
+        # return max_num
+
+        length = len(nums)
+        curr_sum = sum(nums[:k])
+        max_sum = curr_sum
+        for i in range(k, length):
+            left_index = i - k
+            curr_sum -= nums[left_index]
+            curr_sum += nums[k]
+            if curr_sum > max_sum:
+                max_sum = curr_sum
+            # max_sum = max(max_sum, curr_sum)
+        return max_sum / 4
         
         
         
@@ -1112,7 +1145,6 @@ class TrieNode2:
                 return False
             node = node.children[ch]
         return True
-
 
 
 # 1268. Search Suggestions System
