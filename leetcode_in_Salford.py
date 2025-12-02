@@ -1144,7 +1144,23 @@ class SmallestInfiniteSet:
             curr_length = end - start + 1
             max_lenth = max(curr_length, max_lenth)
         return max_lenth
-            
+    # 1493. Longest Subarray of 1's After Deleting One Element
+    def longestSubarray(self, nums: List[int]) -> int:
+        start = 0
+        length = len(nums)
+        max_length = 0
+        zero_counter = 0
+        for end in range(length):
+            if nums[end] == 0:
+                zero_counter += 1
+            while zero_counter > 1:
+                if nums[start] == 0:
+                    zero_counter -= 1
+                start += 1
+            curr_length = end - start
+            max_length = max(curr_length, max_length)
+        return max_length
+                
                 
             
         
