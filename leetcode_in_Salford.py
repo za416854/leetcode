@@ -1112,6 +1112,26 @@ class SmallestInfiniteSet:
                 max_sum = curr_sum
             # max_sum = max(max_sum, curr_sum)
         return max_sum / 4
+    # 1456. Maximum Number of Vowels in a Substring of Given Length
+    def maxVowels(self, s: str, k: int) -> int:
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        curr_counters = 0
+        for i in range(k):
+            if s[i] in vowels:
+                curr_counters += 1
+        max_counter = curr_counters
+        for i in range(k, len(s)):
+            left_index = i - k
+            if s[left_index] in vowels:
+                curr_counters -= 1
+            if s[i] in vowels:
+                curr_counters += 1
+            max_counter = max(curr_counters, max_counter)
+        return max_counter
+            
+                
+            
+        
         
         
         
