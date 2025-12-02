@@ -1029,6 +1029,37 @@ class SmallestInfiniteSet:
                 s_index += 1
             t_index += 1
         return True if s_index == len(s) else False
+    # 11. Container With Most Water
+    def maxArea(self, height: List[int]) -> int:
+        left = 0
+        right = len(height) -1
+        max_val = 0
+        while left < right:
+            width = right - left
+            curr_val = 0
+            if height[left] > height[right]:
+                curr_val  = height[right] * width
+                right -= 1
+            else:
+                curr_val  =  height[left] * width
+                left += 1
+            if curr_val > max_val:
+                max_val = curr_val
+        return max_val
+        # another solution
+        left = 0
+        right = len(height) -1
+        maxVolme = 0
+        while left < right:
+            currHeight = min(height[left], height[right])
+            currWidth = right - left
+            currVolume = currHeight * currWidth
+            maxVolme = max(maxVolme, currVolume)
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+        return maxVolme
                 
             
             
