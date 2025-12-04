@@ -1161,7 +1161,7 @@ class SmallestInfiniteSet:
             max_length = max(curr_length, max_length)
         return max_length
     
-    # 1732. Find the Highest Altitude
+    # 1732. Find the Highest Altitude 
     def largestAltitude(self, gain: List[int]) -> int:
         res = [0] * (len(gain) + 1)
         for i in range(1, len(gain) + 1):
