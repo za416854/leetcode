@@ -1160,7 +1160,38 @@ class SmallestInfiniteSet:
             curr_length = end - start
             max_length = max(curr_length, max_length)
         return max_length
+    
+    # 1732. Find the Highest Altitude
+    def largestAltitude(self, gain: List[int]) -> int:
+        res = [0] * (len(gain) + 1)
+        for i in range(1, len(gain) + 1):
+            res[i] = gain[i - 1] + res[i - 1]
+        res_num = 0
+        for num in res:
+            res_num = max(res_num, num)
+        return res_num
+        # another way
+        curr_altitude = 0
+        max_altitude = 0
+        for num in gain:
+            curr_altitude += num
+            max_altitude = max(max_altitude, curr_altitude)
+        return max_altitude
+    
+    # 724. Find Pivot Index
+    def pivotIndex(self, nums: List[int]) -> int:
+        total_sum = 0
+        for num in nums:
+            total_sum += num
+        left_sum = 0
+        for i in range(len(nums)):
+            right_sum = total_sum - left_sum - nums[i] 
+            if right_sum == left_sum:
+                return i
+            left_sum += nums[i]
+        return -1
                 
+        
                 
             
         
