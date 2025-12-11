@@ -1,4 +1,4 @@
-from collections import defaultdict, deque
+from collections import defaultdict, deque, Counter
 import math
 import sys
 from typing import List, Optional
@@ -1218,7 +1218,24 @@ class SmallestInfiniteSet:
                 return False
             res.append(v)
         return True
-             
+    
+    # 1657. Determine if Two Strings Are Close
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        if len(word1) != len(word2):
+            return False
+        # collections.Counter 是 Python 標準庫中的一個類別，將一個列表或字串轉換成一個字典，其中鍵 (Key) 是元素，值 (Value) 是該元素出現的次數。
+        # from collections import Counter
+        # c = Counter("banana")
+        # c 的結果是 {'b': 1, 'a': 3, 'n': 2}
+        counter1 = Counter(word1)
+        counter2 = Counter(word2)
+        if set(counter1.keys()) != set(counter2.keys()):
+            return False
+        sorted1 = sorted(counter1.values())
+        sorted2 = sorted(counter2.values())
+        if sorted1 != sorted2:
+            return False
+        return True
         
         
         
