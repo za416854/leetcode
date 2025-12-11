@@ -1204,9 +1204,24 @@ class SmallestInfiniteSet:
             if num not in set1:
                 res2.append(num)
         return [res1, res2]
+    # 1207. Unique Number of Occurrences
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        dic = dict()
+        for num in arr:
+            if num not in dic:
+                dic[num] = 1
+            else:
+                dic[num] += 1
+        res = []
+        for k, v in dic.items():
+            if v in res:
+                return False
+            res.append(v)
+        return True
+             
         
-                
-            
+        
+        
         
         
         
