@@ -1625,7 +1625,7 @@ class StockSpanner:
         
         return "".join(stack)
 
-    # 735. Asteroid Collision
+    # 735. Asteroid Collision 
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
         stack = []
         for num in asteroids:
