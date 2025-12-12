@@ -1702,7 +1702,7 @@ class StockSpanner:
         return head
         
                 
-    # 328. Odd Even Linked List 
+    # 328. Odd Even Linked List  
     def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if head is None or head.next is None:
             return head
