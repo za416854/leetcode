@@ -1643,7 +1643,7 @@ class StockSpanner:
                 stack.append(num)
         return stack
         
-    # 394. Decode String
+    # 394. Decode String 
     def decodeString(self, s: str) -> str:
         stack = []
         curr_num = 0
