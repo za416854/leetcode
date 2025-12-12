@@ -1614,7 +1614,7 @@ class StockSpanner:
             res += dic.get(tuple(col), 0)
         return res
     
-    # 2390. Removing Stars From a String
+    # 2390. Removing Stars From a String 
     def removeStars(self, s: str) -> str:
         stack = list()
         for char in s:
