@@ -879,47 +879,6 @@ class Solution:
                 res[prev] = i - prev
             stack.append(i)
         return res
-
-
-# Monotonic Stack
-# 901. Online Stock Span
-class StockSpanner:
-
-    def __init__(self):
-        self.stack = []
-
-    def next(self, price: int) -> int:
-        span = 1
-        while self.stack and self.stack[-1][0] <= price:
-            curr_price, curr_span = self.stack.pop()
-            span += curr_span
-        self.stack.append((price, span))
-        return span
-
-
-# 2336. Smallest Number in Infinite Set
-class SmallestInfiniteSet:
-
-    def __init__(self):
-        self.current = 1  # 下一個尚未取出的自然數
-        self.heap = []  # 被加回的數字
-        self.added = set()  # 避免 heap 重複數字
-
-    def popSmallest(self) -> int:
-        if self.heap:  # 若有被加回的數，優先取最小
-            smallest = heapq.heappop(self.heap)
-            self.added.remove(smallest)
-            return smallest
-        else:
-            val = self.current
-            self.current += 1  # 往下一個自然數移動
-            return val
-
-    def addBack(self, num: int) -> None:
-        if num < self.current and num not in self.added:
-            heapq.heappush(self.heap, num)
-            self.added.add(num)
-
     # 1268. Search Suggestions System
     def suggestedProducts(
         self, products: List[str], searchWord: str
@@ -1236,10 +1195,503 @@ class SmallestInfiniteSet:
         if sorted1 != sorted2:
             return False
         return True
+    
+    # 2352. Equal Row and Column Pairs
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        dic = dict()
+        # 這題counter也可以，效率也比較好，因為會自己算好
+        counter = Counter()
         
+        for row in grid:
+            # dic[tuple(row)] = dic.get(tuple(row), 0) + 1
+            counter[tuple(row)] += 1
+        res = 0
+        for i in range(m):
+            col = []
+            for j in range(n):
+                col.append(grid[j][i])
+            res += dic.get(tuple(col), 0)
+        return res
+    
+    # 2390. Removing Stars From a String
+    def removeStars(self, s: str) -> str:
+        stack = list()
+        for char in s:
+            if char == '*' and stack:
+                stack.pop()
+                continue
+            stack.append(char)
         
+        return "".join(stack)
+
+    # 735. Asteroid Collision
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        stack = []
+        for num in asteroids:
+            while stack and num < 0 and stack[-1] > 0:
+                if stack[-1] < abs(num):
+                    stack.pop()
+                    continue
+                elif stack[-1] == abs(num):
+                    stack.pop()
+                    break
+                else:
+                    break
+            # python 獨有 while else 介紹: else 會在 while「正常結束」時執行，如果你在 while 裡用 break，中斷 while，else 不會執行。
+            else:
+                stack.append(num)
+        return stack
         
+    # 394. Decode String
+    def decodeString(self, s: str) -> str:
+        stack = []
+        curr_num = 0
+        curr_str = "" 
+        for ch in s:
+            if ch.isdigit():
+                curr_num = curr_num * 10 + int(ch)
+            elif ch == "[":
+                stack.append((curr_str, curr_num))
+                curr_num = 0
+                curr_str = ""
+            elif ch == "]":
+                prev_str, prev_num =  stack.pop()
+                curr_str = prev_str + prev_num * curr_str
+            else:     
+                curr_str += ch
+        return curr_str
+
+
+# Monotonic Stack
+# 901. Online Stock Span
+class StockSpanner:
+
+    def __init__(self):
+        self.stack = []
+
+    def next(self, price: int) -> int:
+        span = 1
+        while self.stack and self.stack[-1][0] <= price:
+            curr_price, curr_span = self.stack.pop()
+            span += curr_span
+        self.stack.append((price, span))
+        return span
+    # 1268. Search Suggestions System
+    def suggestedProducts(
+        self, products: List[str], searchWord: str
+    ) -> List[List[str]]:
+        products.sort()
+        trie = Trie()
+        for p in products:
+            trie.insert(p)
+
+        res = []
+        prefix = ""
+        for ch in searchWord:
+            prefix += ch
+            suggestions = trie.searchPrefix(prefix)
+            res.append(suggestions)
+        return res
+
+    # 1768. Merge Strings Alternately
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        res = ""
+        i = 0
+        j = 0
+        while i < len(word1) or j < len(word2):
+            if i < len(word1) and j < len(word2):
+                res += word1[i]
+                res += word2[j]
+                i += 1
+                j += 1
+            elif i >= len(word1) and j < len(word2):
+                res += word2[j]
+                j += 1
+            else:
+                res += word1[i]
+                i += 1
+        return res
+
+    # 151. Reverse Words in a String
+    def reverseWords(self, s: str) -> str:
+        words = s.split()
+        # 這裡reverse return None所以不用放var在等號左邊
+        words.reverse()
+        return " ".join(words)
+
+    # 238. Product of Array Except Self
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        res = [1] * len(nums)
+        curr_L = 1
+        for i in range(len(nums)):
+            # j = i + 1
+            res[i] *= curr_L
+            curr_L = curr_L * nums[i]
+        # for i in reversed(range(len(nums))):
+        curr_R = 1
+        for i in range(len(nums) - 1, -1, -1):
+            res[i] *= curr_R
+            curr_R = curr_R * nums[i]
+        return res
+
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        first = float("inf")
+        second = float("inf")
+        for num in nums:
+            if num <= first:
+                first = num
+            elif num <= second:
+                second = num
+            else:
+                return True  # n > second
+        return False
+
+    # 443. String Compression 這題是in-space操作，不能開list額外空間，所以只能用two pointer的方式來操作chars空間，並回傳write指針代表長度
+    def compress(self, chars: List[str]) -> int:
+        length = len(chars)
+        read = 0
+        write = 0
+        while read < length:
+            char_start = read
+            while read < length and chars[read] == chars[char_start]:
+                read += 1
+
+            count = read - char_start
+            chars[write] = chars[char_start]
+            write += 1
+            if count > 1:
+                for ch in str(count):
+                    chars[write] = ch
+                    write += 1
+        return write
+
+    # 283. Move Zeroes
+    def moveZeroes(self, nums: List[int]) -> None:
+        zero_counter = 0
+        write = 0
+        for num in nums:
+            if num == 0:
+                zero_counter += 1
+            else:
+                nums[write] = num
+                write += 1
+        for i in range(write, len(nums)):
+            nums[i] = 0
+
+    # 392. Is Subsequence
+    def isSubsequence(self, s: str, t: str) -> bool:
+        s_index = 0
+        t_index = 0
+        while s_index < len(s) and t_index < len(t):
+            if s[s_index] == t[t_index]:
+                s_index += 1
+            t_index += 1
+        return True if s_index == len(s) else False
+
+    # 11. Container With Most Water
+    def maxArea(self, height: List[int]) -> int:
+        left = 0
+        right = len(height) - 1
+        max_val = 0
+        while left < right:
+            width = right - left
+            curr_val = 0
+            if height[left] > height[right]:
+                curr_val = height[right] * width
+                right -= 1
+            else:
+                curr_val = height[left] * width
+                left += 1
+            if curr_val > max_val:
+                max_val = curr_val
+        return max_val
+        # another solution
+        left = 0
+        right = len(height) - 1
+        maxVolme = 0
+        while left < right:
+            currHeight = min(height[left], height[right])
+            currWidth = right - left
+            currVolume = currHeight * currWidth
+            maxVolme = max(maxVolme, currVolume)
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+        return maxVolme
+
+    # 1679. Max Number of K-Sum Pairs 這題要記得排序
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        counter = 0
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            sum = nums[left] + nums[right]
+            if sum == k:
+                left += 1
+                right -= 1
+                counter += 1
+            elif sum < k:
+                left += 1
+            else:
+                right -= 1
+        return counter
+    # 643. Maximum Average Subarray I
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # 該解法 TLE
+        # if k == 1:
+        #     return nums[0]
+        # start = 0
+        # end = start + k
+        # length = len(nums)
+        # max_num = 0
+        # while end < length:
+        #     curr_num = 0
+        #     for i in range(start, end, 1):
+        #         curr_num += nums[i]
+        #     curr_num = curr_num / k
+        #     if curr_num > max_num:
+        #         max_num = curr_num
+        #     start += 1
+        #     end += 1
+        # return max_num
+
+        length = len(nums)
+        curr_sum = sum(nums[:k])
+        max_sum = curr_sum
+        for i in range(k, length):
+            left_index = i - k
+            curr_sum -= nums[left_index]
+            curr_sum += nums[k]
+            if curr_sum > max_sum:
+                max_sum = curr_sum
+            # max_sum = max(max_sum, curr_sum)
+        return max_sum / 4
+    # 1456. Maximum Number of Vowels in a Substring of Given Length
+    def maxVowels(self, s: str, k: int) -> int:
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        curr_counters = 0
+        for i in range(k):
+            if s[i] in vowels:
+                curr_counters += 1
+        max_counter = curr_counters
+        for i in range(k, len(s)):
+            left_index = i - k
+            if s[left_index] in vowels:
+                curr_counters -= 1
+            if s[i] in vowels:
+                curr_counters += 1
+            max_counter = max(curr_counters, max_counter)
+        return max_counter
+    # 1004. Max Consecutive Ones III
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        start = 0
+        length = len(nums)
+        max_lenth = 0
+        zero_count = 0
+        for end in range(length):
+            if nums[end] == 0:
+                zero_count += 1
+            while zero_count > k:
+                if nums[start] == 0:
+                    zero_count -= 1
+                start += 1
+            curr_length = end - start + 1
+            max_lenth = max(curr_length, max_lenth)
+        return max_lenth
+    # 1493. Longest Subarray of 1's After Deleting One Element
+    def longestSubarray(self, nums: List[int]) -> int:
+        start = 0
+        length = len(nums)
+        max_length = 0
+        zero_counter = 0
+        for end in range(length):
+            if nums[end] == 0:
+                zero_counter += 1
+            while zero_counter > 1:
+                if nums[start] == 0:
+                    zero_counter -= 1
+                start += 1
+            curr_length = end - start
+            max_length = max(curr_length, max_length)
+        return max_length
+    
+    # 1732. Find the Highest Altitude 
+    def largestAltitude(self, gain: List[int]) -> int:
+        res = [0] * (len(gain) + 1)
+        for i in range(1, len(gain) + 1):
+            res[i] = gain[i - 1] + res[i - 1]
+        res_num = 0
+        for num in res:
+            res_num = max(res_num, num)
+        return res_num
+        # another way
+        curr_altitude = 0
+        max_altitude = 0
+        for num in gain:
+            curr_altitude += num
+            max_altitude = max(max_altitude, curr_altitude)
+        return max_altitude
+    
+    # 724. Find Pivot Index
+    def pivotIndex(self, nums: List[int]) -> int:
+        total_sum = 0
+        for num in nums:
+            total_sum += num
+        left_sum = 0
+        for i in range(len(nums)):
+            right_sum = total_sum - left_sum - nums[i] 
+            if right_sum == left_sum:
+                return i
+            left_sum += nums[i]
+        return -1
+    
+    # 2215. Find the Difference of Two Arrays
+    def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
+        set1 = set(nums1)
+        set2 = set(nums2)
+        res1 = []
+        for num in set1:
+            if num not in set2:
+                res1.append(num)
+        res2 = []
+        for num in set2:
+            if num not in set1:
+                res2.append(num)
+        return [res1, res2]
+    # 1207. Unique Number of Occurrences
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        dic = dict()
+        for num in arr:
+            if num not in dic:
+                dic[num] = 1
+            else:
+                dic[num] += 1
+        res = []
+        for k, v in dic.items():
+            if v in res:
+                return False
+            res.append(v)
+        return True
+    
+    # 1657. Determine if Two Strings Are Close
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        if len(word1) != len(word2):
+            return False
+        # collections.Counter 是 Python 標準庫中的一個類別，將一個列表或字串轉換成一個字典，其中鍵 (Key) 是元素，值 (Value) 是該元素出現的次數。
+        # from collections import Counter
+        # c = Counter("banana")
+        # c 的結果是 {'b': 1, 'a': 3, 'n': 2}
+        counter1 = Counter(word1)
+        counter2 = Counter(word2)
+        if set(counter1.keys()) != set(counter2.keys()):
+            return False
+        sorted1 = sorted(counter1.values())
+        sorted2 = sorted(counter2.values())
+        if sorted1 != sorted2:
+            return False
+        return True
+    
+    # 2352. Equal Row and Column Pairs
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        dic = dict()
+        # 這題counter也可以，效率也比較好，因為會自己算好
+        counter = Counter()
         
+        for row in grid:
+            # dic[tuple(row)] = dic.get(tuple(row), 0) + 1
+            counter[tuple(row)] += 1
+        res = 0
+        for i in range(m):
+            col = []
+            for j in range(n):
+                col.append(grid[j][i])
+            res += dic.get(tuple(col), 0)
+        return res
+    
+    # 2390. Removing Stars From a String
+    def removeStars(self, s: str) -> str:
+        stack = list()
+        for char in s:
+            if char == '*' and stack:
+                stack.pop()
+                continue
+            stack.append(char)
+        
+        return "".join(stack)
+
+    # 735. Asteroid Collision
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        stack = []
+        for num in asteroids:
+            while stack and num < 0 and stack[-1] > 0:
+                if stack[-1] < abs(num):
+                    stack.pop()
+                    continue
+                elif stack[-1] == abs(num):
+                    stack.pop()
+                    break
+                else:
+                    break
+            # python 獨有 while else 介紹: else 會在 while「正常結束」時執行，如果你在 while 裡用 break，中斷 while，else 不會執行。
+            else:
+                stack.append(num)
+        return stack
+        
+    # 394. Decode String
+    def decodeString(self, s: str) -> str:
+        stack = []
+        curr_num = 0
+        curr_str = "" 
+        res = ""
+        for ch in s:
+            if ch.isdigit():
+                curr_num = curr_num * 10 + int(ch)
+            elif ch == "[":
+                stack.append((curr_str, curr_num))
+                curr_num = 0
+                curr_str = ""
+            elif ch == "]":
+                prev_str, prev_num =  stack.pop()
+                # curr_str 代表「目前這一層」已經完整解好的，串，pop 之後要把這層結果塞回上一層 curr_str
+                # 我原本的做法是用res 來儲存curr_str組好的結果，這會造成巢狀效果失效
+                # 要稍微用recursion的觀念去想這邊
+                # res += prev_str + prev_num * curr_str 這是錯的
+                
+                curr_str = prev_str + prev_num * curr_str
+            else:     
+                curr_str += ch
+        return curr_str
+
+# 2336. Smallest Number in Infinite Set
+class SmallestInfiniteSet:
+
+    def __init__(self):
+        self.current = 1  # 下一個尚未取出的自然數
+        self.heap = []  # 被加回的數字
+        self.added = set()  # 避免 heap 重複數字
+
+    def popSmallest(self) -> int:
+        if self.heap:  # 若有被加回的數，優先取最小
+            smallest = heapq.heappop(self.heap)
+            self.added.remove(smallest)
+            return smallest
+        else:
+            val = self.current
+            self.current += 1  # 往下一個自然數移動
+            return val
+
+    def addBack(self, num: int) -> None:
+        if num < self.current and num not in self.added:
+            heapq.heappush(self.heap, num)
+            self.added.add(num)
+
+    
         
         
         
@@ -1321,7 +1773,8 @@ if __name__ == "__main__":
     root.right.right = TreeNode(2)
     # Create a Solution instance and call the method
     solution = Solution()
-    print(solution.maxLevelSum(root))  # Output: [1, 3, 4]
-    print("1448: ", solution.goodNodes(root))  # 4
-    connections = [[0, 1], [1, 2], [2, 3], [3, 0]]
-    print(" ", solution.minReorder(4, connections))
+    # print(solution.maxLevelSum(root))  # Output: [1, 3, 4]
+    # print("1448: ", solution.goodNodes(root))  # 4
+    # connections = [[0, 1], [1, 2], [2, 3], [3, 0]]
+    # print(" ", solution.minReorder(4, connections))
+    print(solution.decodeString('3[a2[c]]'))
