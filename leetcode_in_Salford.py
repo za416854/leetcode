@@ -1667,6 +1667,81 @@ class StockSpanner:
             else:     
                 curr_str += ch
         return curr_str
+    
+    # 933. Number of Recent Calls
+    def predictPartyVictory(self, senate: str) -> str:
+        r_queue = deque()
+        d_queue = deque()
+        lengh = len(senate)
+        for i, ch in enumerate(senate):
+            if ch == 'R':
+                r_queue.append(i)
+            else:
+                d_queue.append(i)
+        while r_queue and d_queue:
+            r_index = r_queue.popleft()
+            d_index = d_queue.popleft()
+            if r_index < d_index:
+                r_queue.append(r_index + lengh)
+            else:
+                d_queue.append(d_index + lengh)
+        return "Radiant" if r_queue else "Dire"
+                
+    # 649. Dota2 Senate        
+    def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = head
+        slow = head
+        fast = head
+        if fast is None or fast.next is None:
+            return None
+        while fast is not None and fast.next is not None:
+            fast = fast.next.next
+            prev = slow
+            slow = slow.next 
+        prev.next = slow.next
+        return head
+        
+                
+    # 328. Odd Even Linked List 
+    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head is None or head.next is None:
+            return head
+        if len(head) == 1:
+            return head
+        odd = head
+        even = head.next
+        even_head = even
+        while even is not None and even.next is not None:
+            odd.next = even.next
+            odd = odd.next
+            even.next = odd.next
+            even = even.next
+        odd.next = even_head
+        return head 
+            
+            
+        
+        
+        
+        
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next          
+        
+# 933. Number of Recent Calls
+class RecentCounter:
+    
+    def __init__(self):
+        self.queue = deque()
+        
+    def ping(self, t: int) -> int:
+        self.queue.append(t)
+        # self.queue.appendleft
+        while self.queue and self.queue[0] <t-3000:
+            self.queue.popleft()
+        return len(self.queue)
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
