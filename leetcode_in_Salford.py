@@ -1687,7 +1687,7 @@ class StockSpanner:
                 d_queue.append(d_index + lengh)
         return "Radiant" if r_queue else "Dire"
                 
-    # 649. Dota2 Senate        
+    # 649. Dota2 Senate         
     def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         prev = head
         slow = head
