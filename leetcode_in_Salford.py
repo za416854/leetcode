@@ -1668,7 +1668,7 @@ class StockSpanner:
                 curr_str += ch
         return curr_str
     
-    # 933. Number of Recent Calls
+    # 933. Number of Recent Calls 
     def predictPartyVictory(self, senate: str) -> str:
         r_queue = deque()
         d_queue = deque()
