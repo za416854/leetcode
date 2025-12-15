@@ -1718,8 +1718,17 @@ class StockSpanner:
             even = even.next
         odd.next = even_head
         return head 
-            
-            
+    
+    # 206. Reverse Linked List
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        curr = head
+        while curr is not None:
+            curr_next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = curr_next
+        return prev
         
         
         
