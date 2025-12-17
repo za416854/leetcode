@@ -1730,8 +1730,31 @@ class StockSpanner:
             curr = curr_next
         return prev
         
+    # 2130. Maximum Twin Sum of a Linked List
+    def pairSum(self, head: Optional[ListNode]) -> int:
+        slow = head
+        fast = head
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next 
+        prev = None
         
-        
+        while slow is not None:
+            slow_next = slow.next
+            slow.next = prev
+            prev = slow
+            slow = slow_next
+        first = head
+        second = prev
+        maxval = 0
+        while second:
+            curr_num = first.val + second.val
+            maxval = max(curr_num, maxval)
+            first = first.next
+            second = second.next 
+        return maxval
+            
+            
         
 
 class ListNode:
