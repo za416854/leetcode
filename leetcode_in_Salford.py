@@ -1738,23 +1738,42 @@ class StockSpanner:
             slow = slow.next
             fast = fast.next.next 
         prev = None
-        
         while slow is not None:
-            slow_next = slow.next
-            slow.next = prev
-            prev = slow
+            slow_next = slow.next 
+            slow.next = prev 
+            prev = slow 
             slow = slow_next
         first = head
         second = prev
-        maxval = 0
-        while second:
-            curr_num = first.val + second.val
-            maxval = max(curr_num, maxval)
-            first = first.next
+        max_val = 0
+        while second is not None:
+            curr_val = first.val + second.val
+            max_val = max(curr_val, max_val)
+            first = first.next 
             second = second.next 
-        return maxval
+        return max_val
+    
+    # 435. Non-overlapping Intervals
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        if not intervals:
+            return 0
+        intervals.sort(key=lambda x:x[1])
+        kept_sub_arrs = 1
+        compare_num = intervals[0][1]
+        for i in range(1, len(intervals)):
+            curr_num = intervals[i][0]
+            if curr_num >= compare_num: 
+                kept_sub_arrs += 1
+                compare_num = intervals[i][1]
+            # compare_num = intervals[i][1]，放這邊不行，因為「貪心只更新『你選的』，不能更新『你丟掉的』」    
+        res = len(intervals) - kept_sub_arrs
+        return res
             
-            
+        
+        
+        
+        
+        
         
 
 class ListNode:
