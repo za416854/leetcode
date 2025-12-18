@@ -1768,7 +1768,18 @@ class StockSpanner:
             # compare_num = intervals[i][1]，放這邊不行，因為「貪心只更新『你選的』，不能更新『你丟掉的』」    
         res = len(intervals) - kept_sub_arrs
         return res
-            
+    # 452. Minimum Number of Arrows to Burst Balloons
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        if not points:
+            return 0
+        points.sort(key= lambda x:x[1])
+        arrow_position = points[0][1]
+        res = 1
+        for start, end in points:
+            if start > arrow_position:
+                res += 1
+                arrow_position = end
+        return res
         
         
         
