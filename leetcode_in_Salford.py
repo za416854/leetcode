@@ -1803,8 +1803,18 @@ class StockSpanner:
             DFS(root1, leaves_1)
             DFS(root2, leaves_2)
             return leaves_2 == leaves_1
-    
+    # 1448. Count Good Nodes in Binary Tree
     def goodNodes(self, root: TreeNode) -> int:
+        def dfs(node: TreeNode, max_so_far):
+            if not node:
+                return 0
+            good = 1 if node.val >= max_so_far else 0
+            max_val = max(node.val, max_so_far)
+            left_good = dfs(node.left, max_val)
+            right_good = dfs(node.ri    ght, max_val)
+            return good + left_good + right_good
+        return dfs(root, root.val)
+        
         
         
         
