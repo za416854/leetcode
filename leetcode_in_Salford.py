@@ -1811,7 +1811,7 @@ class StockSpanner:
             good = 1 if node.val >= max_so_far else 0
             max_val = max(node.val, max_so_far)
             left_good = dfs(node.left, max_val)
-            right_good = dfs(node.ri    ght, max_val)
+            right_good = dfs(node.right, max_val)
             return good + left_good + right_good
         return dfs(root, root.val)
     
@@ -1839,7 +1839,22 @@ class StockSpanner:
             dic[curr_sum] -= 1
             return count
         return dfs(root, 0)
-        
+    
+    # 1372. Longest ZigZag Path in a Binary Tree
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        self.max_path = 0
+        def dfs(node: Optional[TreeNode], directions: str, curr_paths: int):
+            if not node:
+                return
+            self.max_path = max(self.max_path, curr_paths)
+            dfs(node.left, 'left', curr_paths + 1 if directions == 'right' else 1)
+            dfs(node.right, 'right', curr_paths + 1 if directions == 'left' else 1)
+            return self.max_path 
+        return dfs(root, '', self.max_path)
+            
+    # 236. Lowest Common Ancestor of a Binary Tree
+            
+            
         
         
         
