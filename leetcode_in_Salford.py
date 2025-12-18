@@ -1780,9 +1780,14 @@ class StockSpanner:
                 res += 1
                 arrow_position = end
         return res
-        
-        
-        
+    # 104. Maximum Depth of Binary Tree
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        left = self.maxDepth(root.left) + 1
+        right = self.maxDepth(root.right) + 1
+        return max(left, right)
+    
         
         
         
