@@ -1814,8 +1814,31 @@ class StockSpanner:
             right_good = dfs(node.ri    ght, max_val)
             return good + left_good + right_good
         return dfs(root, root.val)
+    
+    # 437. Path Sum III
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        dic = defaultdict(int)
+        # if 樹只有一個節點，「沒有」放 dic[0] = 1，若明明有一條，但卻還是算到0條！
+        dic[0] = 1
         
-        
+        def dfs(node:  Optional[TreeNode], curr_sum:int) -> int:
+            if not node:
+                return 0
+            # 1. 更新當前路徑總和   
+            curr_sum += node.val
+            # 2. 檢查是否有任何「前綴」能讓我們減出 targetSum
+            # 也就是尋找：curr_sum - targetSum
+            count = dic.get(curr_sum - targetSum, 0)
+            # 3. 把當前的 curr_sum 存入字典，供子節點使用
+            dic[curr_sum] = dic.get(curr_sum, 0) + 1
+            count += dfs(node.left, curr_sum)
+            count += dfs(node.right, curr_sum)
+            # 5. 【關鍵】回溯 (Backtracking)：
+            # 當離開這個節點回到父節點時，要移除當前的前綴和
+            # 避免不同支線的路徑互相干擾
+            dic[curr_sum] -= 1
+            return count
+        return dfs(root, 0)
         
         
         
