@@ -1788,6 +1788,25 @@ class StockSpanner:
         right = self.maxDepth(root.right) + 1
         return max(left, right)
     
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:    
+        
+            leaves_1 = []
+            leaves_2 = []
+            
+            def DFS(node: Optional[TreeNode], leaves: list):
+                if not node:
+                    return
+                if not node.left and not node.right:
+                    leaves.append(node.val)
+                DFS(node.left, leaves)
+                DFS(node.right, leaves)
+            DFS(root1, leaves_1)
+            DFS(root2, leaves_2)
+            return leaves_2 == leaves_1
+    
+    def goodNodes(self, root: TreeNode) -> int:
+        
+        
         
         
         
