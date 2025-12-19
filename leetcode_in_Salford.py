@@ -1879,7 +1879,7 @@ class StockSpanner:
                 if node.right:
                     queue.append(node.right)
         return res
-    # 1161. Maximum Level Sum of a Binary Tree
+    # 1161. Maximum Level Sum of a Binary Tree 
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
