@@ -1862,7 +1862,7 @@ class StockSpanner:
         if left and right:
             return root
         return left if left else right
-    # 199. Binary Tree Right Side View
+    # 199. Binary Tree Right Side View 
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []
