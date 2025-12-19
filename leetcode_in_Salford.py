@@ -1853,8 +1853,58 @@ class StockSpanner:
         return dfs(root, '', self.max_path)
             
     # 236. Lowest Common Ancestor of a Binary Tree
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not root or root == p or root == q:
+            return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        # 若root是分散在左子樹跟右子樹，回傳祖先root
+        if left and right:
+            return root
+        return left if left else right
+    # 199. Binary Tree Right Side View
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        queue = deque([root])
+        res = []
+        while queue:
+            level_len = len(queue)
+            for i in range(level_len):
+                node = queue.popleft()
+                if i == level_len - 1:
+                    res.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return res
+    # 1161. Maximum Level Sum of a Binary Tree
+    def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        queue = deque([root])
+        max_num = float('-inf')
+        counter = 0 
+        res = 0
+        while queue:
+            level_len = len(queue)
+            counter += 1
+            curr_val = 0
+            for _ in range(level_len):
+                node = queue.popleft()
+                curr_val += node.val
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            if curr_val > max_num:
+                max_num = curr_val
+                res = counter
+        return res
             
-            
+        
+        
         
         
         
