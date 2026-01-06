@@ -1902,10 +1902,22 @@ class StockSpanner:
                 max_num = curr_val
                 res = counter
         return res
-            
-        
-        
-        
+    
+    # 700. Search in a Binary Search Tree
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        def dfs(node: Optional[TreeNode]):
+            if not node:
+                return None
+            if node.val == val:
+                return node
+            if node.val > val:
+                return dfs(node.left)
+            else:
+                return dfs(node.right)
+        return dfs(root)
+    
+    
+    def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
         
         
 
