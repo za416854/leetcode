@@ -1916,9 +1916,39 @@ class StockSpanner:
                 return dfs(node.right)
         return dfs(root)
     
-    
+    # 450. Delete Node in a BST 這題需要多次練習
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
-        
+        def dfs(node: Optional[TreeNode], key: int):
+            if not node: 
+                return None 
+            if node.val > key: 
+                node.left = dfs(node.left, key) 
+            elif node.val < key: 
+                node.right = dfs(node.right, key) 
+            else: 
+                if not node.right: 
+                    return node.left 
+                if not node.left: 
+                    return node.right 
+                curr = node.right 
+                while curr.left: 
+                    curr = curr.left  
+                node.val = curr.val 
+                node.right = dfs(node.right, curr.val) 
+            return node 
+        return dfs(root, key)
+    # 841. Keys and Rooms 這題不難但要對dfs 是有graph 的想像因為這是 graph 的dfs
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:     
+        visited = set()
+        def dfs(room: int):
+            if room in visited:
+                return
+            visited.add(room)
+            for key in rooms[room]:
+                dfs(key)
+        dfs(0)
+        return len(visited) == len(rooms)
+                    
         
 
 class ListNode:
