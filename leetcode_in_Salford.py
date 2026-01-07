@@ -1979,39 +1979,42 @@ class StockSpanner:
 
     # 547. Number of Provinces 
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        # dfs solution
+        # dfs
         visited = set()
         provinces = 0
         n = len(isConnected)
-
+        
         def dfs(city: int):
             for j in range(n):
                 if j not in visited and isConnected[city][j] == 1:
                     visited.add(j)
                     dfs(j)
-
         for i in range(n):
             if i not in visited:
                 visited.add(i)
                 dfs(i)
                 provinces += 1
-
         return provinces
-        # bfs solution
+        # bfs
         visited = set()
         provinces = 0
         n = len(isConnected)
         for i in range(n):
             if i not in visited:
                 queue = deque([i])
+                visited.add[i]
                 while queue:
                     city = queue.popleft()
                     for j in range(n):
-                        if j not in visited and isConnected[city][j] == 1:
-                            visited.add(j)
+                        if j not in provinces and isConnected[city][j] == 1:
+                            visited.add[j]
                             queue.append(j)
                 provinces += 1
         return provinces
+                        
+        
+        
+        
 
 
 class ListNode:
