@@ -1977,7 +1977,7 @@ class StockSpanner:
         dfs(0)
         return len(visited) == len(rooms)
 
-    # 547. Number of Provinces
+    # 547. Number of Provinces 
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
         # dfs solution
         visited = set()
