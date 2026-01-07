@@ -879,6 +879,7 @@ class Solution:
                 res[prev] = i - prev
             stack.append(i)
         return res
+
     # 1268. Search Suggestions System
     def suggestedProducts(
         self, products: List[str], searchWord: str
@@ -1040,6 +1041,7 @@ class Solution:
             else:
                 right -= 1
         return counter
+
     # 643. Maximum Average Subarray I
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # 該解法 TLE
@@ -1071,9 +1073,10 @@ class Solution:
                 max_sum = curr_sum
             # max_sum = max(max_sum, curr_sum)
         return max_sum / 4
+
     # 1456. Maximum Number of Vowels in a Substring of Given Length
     def maxVowels(self, s: str, k: int) -> int:
-        vowels = ['a', 'e', 'i', 'o', 'u']
+        vowels = ["a", "e", "i", "o", "u"]
         curr_counters = 0
         for i in range(k):
             if s[i] in vowels:
@@ -1087,6 +1090,7 @@ class Solution:
                 curr_counters += 1
             max_counter = max(curr_counters, max_counter)
         return max_counter
+
     # 1004. Max Consecutive Ones III
     def longestOnes(self, nums: List[int], k: int) -> int:
         start = 0
@@ -1103,6 +1107,7 @@ class Solution:
             curr_length = end - start + 1
             max_lenth = max(curr_length, max_lenth)
         return max_lenth
+
     # 1493. Longest Subarray of 1's After Deleting One Element
     def longestSubarray(self, nums: List[int]) -> int:
         start = 0
@@ -1119,8 +1124,8 @@ class Solution:
             curr_length = end - start
             max_length = max(curr_length, max_length)
         return max_length
-    
-    # 1732. Find the Highest Altitude 
+
+    # 1732. Find the Highest Altitude
     def largestAltitude(self, gain: List[int]) -> int:
         res = [0] * (len(gain) + 1)
         for i in range(1, len(gain) + 1):
@@ -1136,7 +1141,7 @@ class Solution:
             curr_altitude += num
             max_altitude = max(max_altitude, curr_altitude)
         return max_altitude
-    
+
     # 724. Find Pivot Index
     def pivotIndex(self, nums: List[int]) -> int:
         total_sum = 0
@@ -1144,12 +1149,12 @@ class Solution:
             total_sum += num
         left_sum = 0
         for i in range(len(nums)):
-            right_sum = total_sum - left_sum - nums[i] 
+            right_sum = total_sum - left_sum - nums[i]
             if right_sum == left_sum:
                 return i
             left_sum += nums[i]
         return -1
-    
+
     # 2215. Find the Difference of Two Arrays
     def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
         set1 = set(nums1)
@@ -1163,6 +1168,7 @@ class Solution:
             if num not in set1:
                 res2.append(num)
         return [res1, res2]
+
     # 1207. Unique Number of Occurrences
     def uniqueOccurrences(self, arr: List[int]) -> bool:
         dic = dict()
@@ -1177,7 +1183,7 @@ class Solution:
                 return False
             res.append(v)
         return True
-    
+
     # 1657. Determine if Two Strings Are Close
     def closeStrings(self, word1: str, word2: str) -> bool:
         if len(word1) != len(word2):
@@ -1195,7 +1201,7 @@ class Solution:
         if sorted1 != sorted2:
             return False
         return True
-    
+
     # 2352. Equal Row and Column Pairs
     def equalPairs(self, grid: List[List[int]]) -> int:
         m = len(grid)
@@ -1203,7 +1209,7 @@ class Solution:
         dic = dict()
         # 這題counter也可以，效率也比較好，因為會自己算好
         counter = Counter()
-        
+
         for row in grid:
             # dic[tuple(row)] = dic.get(tuple(row), 0) + 1
             counter[tuple(row)] += 1
@@ -1214,16 +1220,16 @@ class Solution:
                 col.append(grid[j][i])
             res += dic.get(tuple(col), 0)
         return res
-    
+
     # 2390. Removing Stars From a String
     def removeStars(self, s: str) -> str:
         stack = list()
         for char in s:
-            if char == '*' and stack:
+            if char == "*" and stack:
                 stack.pop()
                 continue
             stack.append(char)
-        
+
         return "".join(stack)
 
     # 735. Asteroid Collision
@@ -1243,12 +1249,12 @@ class Solution:
             else:
                 stack.append(num)
         return stack
-        
+
     # 394. Decode String
     def decodeString(self, s: str) -> str:
         stack = []
         curr_num = 0
-        curr_str = "" 
+        curr_str = ""
         for ch in s:
             if ch.isdigit():
                 curr_num = curr_num * 10 + int(ch)
@@ -1257,9 +1263,9 @@ class Solution:
                 curr_num = 0
                 curr_str = ""
             elif ch == "]":
-                prev_str, prev_num =  stack.pop()
+                prev_str, prev_num = stack.pop()
                 curr_str = prev_str + prev_num * curr_str
-            else:     
+            else:
                 curr_str += ch
         return curr_str
 
@@ -1278,6 +1284,7 @@ class StockSpanner:
             span += curr_span
         self.stack.append((price, span))
         return span
+
     # 1268. Search Suggestions System
     def suggestedProducts(
         self, products: List[str], searchWord: str
@@ -1439,6 +1446,7 @@ class StockSpanner:
             else:
                 right -= 1
         return counter
+
     # 643. Maximum Average Subarray I
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # 該解法 TLE
@@ -1470,9 +1478,10 @@ class StockSpanner:
                 max_sum = curr_sum
             # max_sum = max(max_sum, curr_sum)
         return max_sum / 4
+
     # 1456. Maximum Number of Vowels in a Substring of Given Length
     def maxVowels(self, s: str, k: int) -> int:
-        vowels = ['a', 'e', 'i', 'o', 'u']
+        vowels = ["a", "e", "i", "o", "u"]
         curr_counters = 0
         for i in range(k):
             if s[i] in vowels:
@@ -1486,6 +1495,7 @@ class StockSpanner:
                 curr_counters += 1
             max_counter = max(curr_counters, max_counter)
         return max_counter
+
     # 1004. Max Consecutive Ones III
     def longestOnes(self, nums: List[int], k: int) -> int:
         start = 0
@@ -1502,6 +1512,7 @@ class StockSpanner:
             curr_length = end - start + 1
             max_lenth = max(curr_length, max_lenth)
         return max_lenth
+
     # 1493. Longest Subarray of 1's After Deleting One Element
     def longestSubarray(self, nums: List[int]) -> int:
         start = 0
@@ -1518,8 +1529,8 @@ class StockSpanner:
             curr_length = end - start
             max_length = max(curr_length, max_length)
         return max_length
-    
-    # 1732. Find the Highest Altitude 
+
+    # 1732. Find the Highest Altitude
     def largestAltitude(self, gain: List[int]) -> int:
         res = [0] * (len(gain) + 1)
         for i in range(1, len(gain) + 1):
@@ -1535,7 +1546,7 @@ class StockSpanner:
             curr_altitude += num
             max_altitude = max(max_altitude, curr_altitude)
         return max_altitude
-    
+
     # 724. Find Pivot Index
     def pivotIndex(self, nums: List[int]) -> int:
         total_sum = 0
@@ -1543,12 +1554,12 @@ class StockSpanner:
             total_sum += num
         left_sum = 0
         for i in range(len(nums)):
-            right_sum = total_sum - left_sum - nums[i] 
+            right_sum = total_sum - left_sum - nums[i]
             if right_sum == left_sum:
                 return i
             left_sum += nums[i]
         return -1
-    
+
     # 2215. Find the Difference of Two Arrays
     def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
         set1 = set(nums1)
@@ -1562,6 +1573,7 @@ class StockSpanner:
             if num not in set1:
                 res2.append(num)
         return [res1, res2]
+
     # 1207. Unique Number of Occurrences
     def uniqueOccurrences(self, arr: List[int]) -> bool:
         dic = dict()
@@ -1576,7 +1588,7 @@ class StockSpanner:
                 return False
             res.append(v)
         return True
-    
+
     # 1657. Determine if Two Strings Are Close
     def closeStrings(self, word1: str, word2: str) -> bool:
         if len(word1) != len(word2):
@@ -1594,7 +1606,7 @@ class StockSpanner:
         if sorted1 != sorted2:
             return False
         return True
-    
+
     # 2352. Equal Row and Column Pairs
     def equalPairs(self, grid: List[List[int]]) -> int:
         m = len(grid)
@@ -1602,7 +1614,7 @@ class StockSpanner:
         dic = dict()
         # 這題counter也可以，效率也比較好，因為會自己算好
         counter = Counter()
-        
+
         for row in grid:
             # dic[tuple(row)] = dic.get(tuple(row), 0) + 1
             counter[tuple(row)] += 1
@@ -1613,19 +1625,19 @@ class StockSpanner:
                 col.append(grid[j][i])
             res += dic.get(tuple(col), 0)
         return res
-    
-    # 2390. Removing Stars From a String 
+
+    # 2390. Removing Stars From a String
     def removeStars(self, s: str) -> str:
         stack = list()
         for char in s:
-            if char == '*' and stack:
+            if char == "*" and stack:
                 stack.pop()
                 continue
             stack.append(char)
-        
+
         return "".join(stack)
 
-    # 735. Asteroid Collision 
+    # 735. Asteroid Collision
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
         stack = []
         for num in asteroids:
@@ -1642,12 +1654,12 @@ class StockSpanner:
             else:
                 stack.append(num)
         return stack
-        
-    # 394. Decode String 
+
+    # 394. Decode String
     def decodeString(self, s: str) -> str:
         stack = []
         curr_num = 0
-        curr_str = "" 
+        curr_str = ""
         res = ""
         for ch in s:
             if ch.isdigit():
@@ -1657,24 +1669,24 @@ class StockSpanner:
                 curr_num = 0
                 curr_str = ""
             elif ch == "]":
-                prev_str, prev_num =  stack.pop()
+                prev_str, prev_num = stack.pop()
                 # curr_str 代表「目前這一層」已經完整解好的，串，pop 之後要把這層結果塞回上一層 curr_str
                 # 我原本的做法是用res 來儲存curr_str組好的結果，這會造成巢狀效果失效
                 # 要稍微用recursion的觀念去想這邊
                 # res += prev_str + prev_num * curr_str 這是錯的
-                
+
                 curr_str = prev_str + prev_num * curr_str
-            else:     
+            else:
                 curr_str += ch
         return curr_str
-    
-    # 933. Number of Recent Calls 
+
+    # 933. Number of Recent Calls
     def predictPartyVictory(self, senate: str) -> str:
         r_queue = deque()
         d_queue = deque()
         lengh = len(senate)
         for i, ch in enumerate(senate):
-            if ch == 'R':
+            if ch == "R":
                 r_queue.append(i)
             else:
                 d_queue.append(i)
@@ -1686,8 +1698,8 @@ class StockSpanner:
             else:
                 d_queue.append(d_index + lengh)
         return "Radiant" if r_queue else "Dire"
-                
-    # 649. Dota2 Senate         
+
+    # 649. Dota2 Senate
     def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         prev = head
         slow = head
@@ -1697,12 +1709,11 @@ class StockSpanner:
         while fast is not None and fast.next is not None:
             fast = fast.next.next
             prev = slow
-            slow = slow.next 
+            slow = slow.next
         prev.next = slow.next
         return head
-        
-                
-    # 328. Odd Even Linked List  
+
+    # 328. Odd Even Linked List
     def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if head is None or head.next is None:
             return head
@@ -1717,8 +1728,8 @@ class StockSpanner:
             even.next = odd.next
             even = even.next
         odd.next = even_head
-        return head 
-    
+        return head
+
     # 206. Reverse Linked List
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         prev = None
@@ -1729,19 +1740,19 @@ class StockSpanner:
             prev = curr
             curr = curr_next
         return prev
-        
+
     # 2130. Maximum Twin Sum of a Linked List
     def pairSum(self, head: Optional[ListNode]) -> int:
         slow = head
         fast = head
         while fast is not None and fast.next is not None:
             slow = slow.next
-            fast = fast.next.next 
+            fast = fast.next.next
         prev = None
         while slow is not None:
-            slow_next = slow.next 
-            slow.next = prev 
-            prev = slow 
+            slow_next = slow.next
+            slow.next = prev
+            prev = slow
             slow = slow_next
         first = head
         second = prev
@@ -1749,30 +1760,31 @@ class StockSpanner:
         while second is not None:
             curr_val = first.val + second.val
             max_val = max(curr_val, max_val)
-            first = first.next 
-            second = second.next 
+            first = first.next
+            second = second.next
         return max_val
-    
+
     # 435. Non-overlapping Intervals
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         if not intervals:
             return 0
-        intervals.sort(key=lambda x:x[1])
+        intervals.sort(key=lambda x: x[1])
         kept_sub_arrs = 1
         compare_num = intervals[0][1]
         for i in range(1, len(intervals)):
             curr_num = intervals[i][0]
-            if curr_num >= compare_num: 
+            if curr_num >= compare_num:
                 kept_sub_arrs += 1
                 compare_num = intervals[i][1]
-            # compare_num = intervals[i][1]，放這邊不行，因為「貪心只更新『你選的』，不能更新『你丟掉的』」    
+            # compare_num = intervals[i][1]，放這邊不行，因為「貪心只更新『你選的』，不能更新『你丟掉的』」
         res = len(intervals) - kept_sub_arrs
         return res
+
     # 452. Minimum Number of Arrows to Burst Balloons
     def findMinArrowShots(self, points: List[List[int]]) -> int:
         if not points:
             return 0
-        points.sort(key= lambda x:x[1])
+        points.sort(key=lambda x: x[1])
         arrow_position = points[0][1]
         res = 1
         for start, end in points:
@@ -1780,6 +1792,7 @@ class StockSpanner:
                 res += 1
                 arrow_position = end
         return res
+
     # 104. Maximum Depth of Binary Tree
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
@@ -1787,22 +1800,24 @@ class StockSpanner:
         left = self.maxDepth(root.left) + 1
         right = self.maxDepth(root.right) + 1
         return max(left, right)
-    
-    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:    
-        
-            leaves_1 = []
-            leaves_2 = []
-            
-            def DFS(node: Optional[TreeNode], leaves: list):
-                if not node:
-                    return
-                if not node.left and not node.right:
-                    leaves.append(node.val)
-                DFS(node.left, leaves)
-                DFS(node.right, leaves)
-            DFS(root1, leaves_1)
-            DFS(root2, leaves_2)
-            return leaves_2 == leaves_1
+
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+
+        leaves_1 = []
+        leaves_2 = []
+
+        def DFS(node: Optional[TreeNode], leaves: list):
+            if not node:
+                return
+            if not node.left and not node.right:
+                leaves.append(node.val)
+            DFS(node.left, leaves)
+            DFS(node.right, leaves)
+
+        DFS(root1, leaves_1)
+        DFS(root2, leaves_2)
+        return leaves_2 == leaves_1
+
     # 1448. Count Good Nodes in Binary Tree
     def goodNodes(self, root: TreeNode) -> int:
         def dfs(node: TreeNode, max_so_far):
@@ -1813,18 +1828,19 @@ class StockSpanner:
             left_good = dfs(node.left, max_val)
             right_good = dfs(node.right, max_val)
             return good + left_good + right_good
+
         return dfs(root, root.val)
-    
+
     # 437. Path Sum III
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
         dic = defaultdict(int)
         # if 樹只有一個節點，「沒有」放 dic[0] = 1，若明明有一條，但卻還是算到0條！
         dic[0] = 1
-        
-        def dfs(node:  Optional[TreeNode], curr_sum:int) -> int:
+
+        def dfs(node: Optional[TreeNode], curr_sum: int) -> int:
             if not node:
                 return 0
-            # 1. 更新當前路徑總和   
+            # 1. 更新當前路徑總和
             curr_sum += node.val
             # 2. 檢查是否有任何「前綴」能讓我們減出 targetSum
             # 也就是尋找：curr_sum - targetSum
@@ -1838,22 +1854,27 @@ class StockSpanner:
             # 避免不同支線的路徑互相干擾
             dic[curr_sum] -= 1
             return count
+
         return dfs(root, 0)
-    
+
     # 1372. Longest ZigZag Path in a Binary Tree
     def longestZigZag(self, root: Optional[TreeNode]) -> int:
         self.max_path = 0
+
         def dfs(node: Optional[TreeNode], directions: str, curr_paths: int):
             if not node:
                 return
             self.max_path = max(self.max_path, curr_paths)
-            dfs(node.left, 'left', curr_paths + 1 if directions == 'right' else 1)
-            dfs(node.right, 'right', curr_paths + 1 if directions == 'left' else 1)
-            return self.max_path 
-        return dfs(root, '', self.max_path)
-            
+            dfs(node.left, "left", curr_paths + 1 if directions == "right" else 1)
+            dfs(node.right, "right", curr_paths + 1 if directions == "left" else 1)
+            return self.max_path
+
+        return dfs(root, "", self.max_path)
+
     # 236. Lowest Common Ancestor of a Binary Tree
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    def lowestCommonAncestor(
+        self, root: "TreeNode", p: "TreeNode", q: "TreeNode"
+    ) -> "TreeNode":
         if not root or root == p or root == q:
             return root
         left = self.lowestCommonAncestor(root.left, p, q)
@@ -1862,7 +1883,8 @@ class StockSpanner:
         if left and right:
             return root
         return left if left else right
-    # 199. Binary Tree Right Side View 
+
+    # 199. Binary Tree Right Side View
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []
@@ -1879,13 +1901,14 @@ class StockSpanner:
                 if node.right:
                     queue.append(node.right)
         return res
-    # 1161. Maximum Level Sum of a Binary Tree 
+
+    # 1161. Maximum Level Sum of a Binary Tree
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
         queue = deque([root])
-        max_num = float('-inf')
-        counter = 0 
+        max_num = float("-inf")
+        counter = 0
         res = 0
         while queue:
             level_len = len(queue)
@@ -1902,7 +1925,7 @@ class StockSpanner:
                 max_num = curr_val
                 res = counter
         return res
-    
+
     # 700. Search in a Binary Search Tree
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         def dfs(node: Optional[TreeNode]):
@@ -1914,60 +1937,102 @@ class StockSpanner:
                 return dfs(node.left)
             else:
                 return dfs(node.right)
+
         return dfs(root)
-    
+
     # 450. Delete Node in a BST 這題需要多次練習
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
         def dfs(node: Optional[TreeNode], key: int):
-            if not node: 
-                return None 
-            if node.val > key: 
-                node.left = dfs(node.left, key) 
-            elif node.val < key: 
-                node.right = dfs(node.right, key) 
-            else: 
-                if not node.right: 
-                    return node.left 
-                if not node.left: 
-                    return node.right 
-                curr = node.right 
-                while curr.left: 
-                    curr = curr.left  
-                node.val = curr.val 
-                node.right = dfs(node.right, curr.val) 
-            return node 
+            if not node:
+                return None
+            if node.val > key:
+                node.left = dfs(node.left, key)
+            elif node.val < key:
+                node.right = dfs(node.right, key)
+            else:
+                if not node.right:
+                    return node.left
+                if not node.left:
+                    return node.right
+                curr = node.right
+                while curr.left:
+                    curr = curr.left
+                node.val = curr.val
+                node.right = dfs(node.right, curr.val)
+            return node
+
         return dfs(root, key)
+
     # 841. Keys and Rooms 這題不難但要對dfs 是有graph 的想像因為這是 graph 的dfs
-    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:     
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
         visited = set()
+
         def dfs(room: int):
             if room in visited:
                 return
             visited.add(room)
             for key in rooms[room]:
                 dfs(key)
+
         dfs(0)
         return len(visited) == len(rooms)
-                    
-        
+
+    # 547. Number of Provinces
+    def findCircleNum(self, isConnected: List[List[int]]) -> int:
+        # dfs solution
+        visited = set()
+        provinces = 0
+        n = len(isConnected)
+
+        def dfs(city: int):
+            for j in range(n):
+                if j not in visited and isConnected[city][j] == 1:
+                    visited.add(j)
+                    dfs(j)
+
+        for i in range(n):
+            if i not in visited:
+                visited.add(i)
+                dfs(i)
+                provinces += 1
+
+        return provinces
+        # bfs solution
+        visited = set()
+        provinces = 0
+        n = len(isConnected)
+        for i in range(n):
+            if i not in visited:
+                queue = deque([i])
+                while queue:
+                    city = queue.popleft()
+                    for j in range(n):
+                        if j not in visited and isConnected[city][j] == 1:
+                            visited.add(j)
+                            queue.append(j)
+                provinces += 1
+        return provinces
+
 
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
-        self.next = next          
-        
+        self.next = next
+
+
 # 933. Number of Recent Calls
 class RecentCounter:
-    
+
     def __init__(self):
         self.queue = deque()
-        
+
     def ping(self, t: int) -> int:
         self.queue.append(t)
         # self.queue.appendleft
-        while self.queue and self.queue[0] <t-3000:
+        while self.queue and self.queue[0] < t - 3000:
             self.queue.popleft()
         return len(self.queue)
+
 
 # 2336. Smallest Number in Infinite Set
 class SmallestInfiniteSet:
@@ -1992,10 +2057,6 @@ class SmallestInfiniteSet:
             heapq.heappush(self.heap, num)
             self.added.add(num)
 
-    
-        
-        
-        
 
 # 208. Implement Trie (Prefix Tree)
 class TrieNode2:
@@ -2078,4 +2139,4 @@ if __name__ == "__main__":
     # print("1448: ", solution.goodNodes(root))  # 4
     # connections = [[0, 1], [1, 2], [2, 3], [3, 0]]
     # print(" ", solution.minReorder(4, connections))
-    print(solution.decodeString('3[a2[c]]'))
+    print(solution.decodeString("3[a2[c]]"))
