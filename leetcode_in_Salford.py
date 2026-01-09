@@ -2010,7 +2010,7 @@ class StockSpanner:
                 provinces += 1
         return provinces
     
-    # 1466. Reorder Routes to Make All Paths Lead to the City Zero
+    # 1466. Reorder Routes to Make All Paths Lead to the City Zero 
     # 這題 self.changes可以做成區域或是全域或區域，全域:遍歷 (Traversal)：單純走過去順便改數字。局部計算： 每一層遞迴只關心它自己那部分的結果。分治法 (Divide & Conquer)：大問題拆成小問題回傳。
     def minReorder(self, n: int, connections: List[List[int]]) -> int:            
         # local
