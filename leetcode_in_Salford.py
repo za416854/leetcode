@@ -395,13 +395,13 @@ class Solution:
             graph[a].append((b, val))
             graph[b].append((a, 1 / val))
 
-        def dfs(curr: str, target: str, acc: float, visited: set):
+        def dfs(curr: str, target: str, accmulation: float, visited: set):
             if curr == target:
-                return acc
+                return accmulation
             visited.add(curr)
             for nei, val in graph[curr]:
                 if nei not in visited:
-                    result = dfs(nei, target, acc * val, visited)
+                    result = dfs(nei, target, accmulation * val, visited)
                     if result != -1:
                         return result
             return -1
@@ -1964,6 +1964,7 @@ class StockSpanner:
             
 
     # 841. Keys and Rooms 這題不難但要對dfs 是有graph 的想像因為這是 graph 的dfs 
+    # 「樹 (Tree)」 與 「圖 (Graph)」 在遞迴設計上最大的差別：1. 從「雙叉」到「多叉」，在二元樹中，每個節點固定只有 left 和 right。但在圖論中，一個節點可能有 0 個、1 個，甚至 100 個鄰居。
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
         visited = set()
         def dfs(room):
@@ -2008,10 +2009,64 @@ class StockSpanner:
                             queue.append(j)
                 provinces += 1
         return provinces
-                        
-        
-        
-        
+    
+    # 1466. Reorder Routes to Make All Paths Lead to the City Zero
+    # 這題 self.changes可以做成區域或是全域或區域，全域:遍歷 (Traversal)：單純走過去順便改數字。局部計算： 每一層遞迴只關心它自己那部分的結果。分治法 (Divide & Conquer)：大問題拆成小問題回傳。
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:            
+        # local
+        graph = defaultdict(list)
+        for a, b in connections:
+            graph[a].append((b, 1))
+            graph[b].append((a, 0))
+        visited = set()
+        def dfs(city):
+            visited.add(city)
+            changes = 0
+            for nei, must_increase in graph[city]:
+                if nei not in visited:
+                    changes += must_increase + dfs(nei)
+            return changes
+        return dfs(0)
+        # global
+        graph = defaultdict(list)
+        for a, b in connections:
+            graph[a].append((b, 1))
+            graph[b].append((a, 0))
+        visited = set()
+        self.changes = 0
+        def dfs(city: int):
+            visited.add(city)
+            for nei, must_change in graph[city]:
+                if nei not in visited:
+                    self.changes += must_change 
+                    dfs(nei)
+        dfs(0)
+        return self.changes
+    
+    # 399. Evaluate Division
+    # 「樹 (Tree)」 與 「圖 (Graph)」 在遞迴設計上最大的差別：1. 從「雙叉」到「多叉」，在二元樹中，每個節點固定只有 left 和 right。但在圖論中，一個節點可能有 0 個、1 個，甚至 100 個鄰居。
+    # 在 DFS 中，這段乘法是 「倒著」 完成的：c 找到 d 了，回傳 $c/d$ 的值。b 拿到值，乘上 $b/c$ 的權重，再傳給 a。a 拿到後，乘上 $a/b$ 的權重，最後輸出。
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        graph = defaultdict(list)
+        for (u, v), val in zip(equations, values):
+            graph[u].append((v, val))
+            graph[v].append((u, 1.0 / val))
+        def dfs(curr_char:str, target_char:str, visited:set):
+            if curr_char not in graph or target_char not in graph:
+                return -1.0
+            if curr_char == target_char:
+                return 1.0
+            visited.add(curr_char)
+            for neighbor, weight in graph[curr_char]:
+                if neighbor not in visited:
+                    res =  dfs(neighbor, target_char, visited)
+                    if res != -1.0:
+                        return res * weight
+            return -1.0
+        res = []
+        for u, v in queries:
+            res.append(dfs(u, v, set()))
+        return res
 
 
 class ListNode:
