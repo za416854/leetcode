@@ -32,5 +32,31 @@ from World
 WHERE area >= 3000000
 OR population >= 25000000
 
+-- 1148. Article Views I 
+-- 這題必須使用 DISTINCT 或 GROUP BY，否則會因為重複檢視而產生重複 ID。
+-- 選 DISTINCT 的時機： 當你只想單純「過濾掉重複的雜訊」，且不涉及任何數值計算時。例如：列出所有有交易紀錄的客戶清單。
+-- 選 GROUP BY 的時機： 當你需要計算「每個客戶買了多少錢」或是「某個欄位出現幾次」時。
 
- 
+select DISTINCT author_id as id 
+from Views
+where author_id = viewer_id     
+order by author_id ASC
+-- 或是
+select author_id as id 
+from Views
+where author_id = viewer_id     
+group by author_id
+order by author_id ASC
+
+
+-- 1683. Invalid Tweets
+-- PostgreSQL	LENGTH()	計算字元數（一個中文算 1）。
+-- MS SQL	LEN()	計算字元數，但不包含結尾的空白。
+-- Oracle	LENGTH()	計算字元數。
+
+select tweet_id 
+from Tweets
+where LENGTH(content) > 15
+
+
+
