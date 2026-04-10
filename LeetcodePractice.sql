@@ -21,3 +21,13 @@ select product_id
 FROM Products 
 WHERE low_fats = 'Y' and recyclable  = 'Y'
 
+-- 584. Find Customer Referee
+Select name from Customer
+where referee_id <> 2
+OR referee_id IS NULL
+
+-- 595. Big Countries
+SELECT name, population, area 
+from World
+WHERE area >= 3000000
+OR population >= 25000000
