@@ -178,7 +178,7 @@ order by rating desc
 
 
 
--- 1251. Average Selling Price
+-- 1251. Average Selling Price 
 -- ON 的本質：相親的條件
 -- 想像 LEFT JOIN 是一場相親大會： 
 -- 左表 (Prices) 是「價格時段」。 
