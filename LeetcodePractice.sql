@@ -226,10 +226,83 @@ FROM Teacher
 group by teacher_id
 
 -- 1731. The Number of Employees Which Report to Each Employee
+-- 解題邏輯：經理與下屬的對碰
+-- 我們要再次把 Employees 表想像成兩張： 
+--   - mgr (經理表)：我們想從這裡拿經理的 employee_id 和 name。 
+--   - emp (下屬表)：我們想從這裡算有多少人，以及他們的平均 age。 
+-- 連線條件：
+-- 當下屬的 reports_to 等於 經理的 employee_id 時，這條線就連起來了。
 SELECT mgr.employee_id, mgr.name, COUNT(emp.reports_to ) as reports_count, ROUND(AVG(emp.age)) as average_age
 FROM Employees mgr
+-- 這裡用 JOIN (也就是 INNER JOIN) 即可，因為題目定義「經理」是至少有一名下屬報告的人。沒有下屬的人，在連線時就會被自動刷掉。
 INNER JOIN Employees emp on mgr.employee_id = emp.reports_to
 GROUP BY mgr.employee_id, mgr.name
 order by mgr.employee_id
+
+
+-- 596. Classes With at Least 5 Students
+SELECT class   
+FROM Courses 
+GROUP BY class
+HAVING COUNT( class ) >= 5
+-- Q: 所以HAVING也可以說是
+-- 我要用聚合函數算欄位但不要SELECT 這個東西
+-- 我就可以用HAVING去做?
+-- GEMINI:
+-- 1. 沒錯！「算而不秀」是 HAVING 的絕活
+-- 在 SQL 的世界裡，SELECT 決定的是「最後誰要出現在螢幕上」，而 HAVING 決定的是「誰有資格留在結果清單裡」。這兩者是完全獨立的。
+
+-- 以這題 596. Classes With at Least 5 Students 為例：
+-- 題目只要我們回傳 class 名稱，不需要知道具體有幾個人。
+-- 電腦在後台做的： 默默地把每個班級的人數算出來（例如：數學班 6 人、英文班 3 人）。 
+-- HAVING 做的： 看到數學班 >= 5，給過；看到英文班 < 5，踢掉。 
+-- SELECT 做的： 只把合格的 class 名字印出來，那個人數（6 或 3）雖然算過了，但因為你沒在 SELECT 寫它，它就不會出現。 
+-- 2. 跟 WHERE 的「權限」差別 
+-- 你可能會問：那為什麼 WHERE 不能這樣玩？ 
+-- 因為 SQL 的執行順序是： 
+-- WHERE：這時候電腦還在看「每一行」原始資料，它根本還沒開始「打包」，所以它不知道「這班到底有幾個人」。 
+-- GROUP BY：這時候才開始打包。  
+-- HAVING：打包完了，這時候電腦才知道每包的重量（COUNT, SUM 等），所以它可以根據這些重量來過濾。 
+-- 白話比喻： 
+--   - WHERE：像是在百貨公司門口檢查，沒帶會員卡的人不准進去（針對個人）。 
+--   - HAVING：像是在百貨公司裡面檢查，消費總額沒滿 5000 的團體不准換贈品（針對分組後的結果）。
+
+
+
+-- 補充HAVING：WHERE 是在分組前過濾「每一行」；HAVING 是在分組後過濾「那一組」。
+-- 為什麼需要 HAVING？（跟 WHERE 的大決鬥）
+-- 想像你正在統計學校的班級人數。 
+--   - WHERE：你可以在統計前說：「我不要看補習班的學生（過濾原始資料）。」 
+--   - HAVING：你不能在統計前說：「我只要看人數大於 30 人的班級。」 
+-- 為什麼？因為在還沒「數」完之前，電腦根本不知道哪個班級有幾個人。所以你必須先 GROUP BY 算完 COUNT，最後再用 HAVING 把不達標的班級踢掉。
+-- 特性,      WHERE,                    HAVING
+-- 執行時機,  GROUP BY 之前,            GROUP BY 之後
+-- 作用對象,  原始資料的「每一列」,       分組後的「統計結果」
+-- 聚合函數,  "不可搭配 COUNT, SUM 等", "專門搭配 COUNT, SUM 等"
+
+-- 1667. Fix Names in a Table
+SELECT 
+user_id, 
+CONCAT(
+  UPPER(SUBSTR(name, 1,1)), 
+  LOWER(SUBSTR(name, 2, LENGTH(name))) 
+  ) as name
+FROM Users 
+ORDER BY user_id
+
+-- 解題邏輯：字串的外科手術
+-- 想像我們要處理的名字是 aLICE： 
+-- 切下第一個字：拿掉 a，用 UPPER() 變成 A。 
+-- 切下剩下的字：拿掉 LICE，用 LOWER() 變成 lice。 
+-- 縫合起來：用 CONCAT() 把 A 和 lice 拼成 Alice。
+
+-- 三大資料庫的字串函數對照
+-- 功能,         MySQL/Oracle,       PostgreSQL,             MS SQL
+-- 拼接字串,     "CONCAT(a, b)",     a || b 或 CONCAT,       a + b 或 CONCAT
+-- 切片 (第1字), "SUBSTR(n, 1, 1)",  "SUBSTRING(n, 1, 1)",   "SUBSTRING(n, 1, 1)"
+-- 切片 (剩餘),  "SUBSTR(n, 2)",     "SUBSTRING(n, 2)",      "SUBSTRING(n, 2, LEN(n))"
+-- 字串長度,     LENGTH(),           LENGTH(),               LEN()
+
+-- 1527. Patients With a Condition
 
 
