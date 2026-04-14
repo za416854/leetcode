@@ -397,7 +397,51 @@ FROM Triangle
 
 -- 196. Delete Duplicate Emails
 -- TRUNCATE TABLE Person; 清空 Person TABLE 所有data
+-- Q: NOT IN跟NOT EXISTS 使用時機
+-- 如果你在寫子查詢（Subquery）：養成反射動作，直接打 NOT EXISTS。它能幫你自動過濾 NULL 的邏輯問題，且效能通常是天花板。
+-- 如果你在比對幾個明確的數字/字串：用 NOT IN 即可，代碼比較清爽。且 用IN的話，只要名單裡出現一個 NULL，整個查詢就會報廢，回傳「空結果」。
+DELETE FROM PERSON
+WHERE id not in(
+	SELECT min(id) 
+	FROM PERSON
+	GROUP BY email
+)
 
+-- 1484. Group Sold Products By The Date 這題要再練，偏難
+-- 這題考驗的是一個非常實用的技能：「字串聚合 (String Aggregation)」。 
+-- 解題邏輯：從「列」到「行」的魔法 
+-- 要完成這題，我們需要三樣東西：  
+-- 去重：同一個日期同一個產品出現兩次，只能算一次。 
+-- 計數：算該日期有幾種產品。 
+-- 拼湊：把產品名字按字母順序排好，然後用逗號黏起來。
+
+-- 2. 各資料庫的「字串聚合」武器 
+-- 這題是展現不同資料庫性格的最好時機，因為它們用來「黏字串」的函數完全不一樣。 
+-- Oracle (使用 LISTAGG) 
+-- Oracle 的語法最優雅但也最嚴謹。我們建議先用一個子查詢把重複的產品刪掉，再進行聚合。
+SELECT 
+    TO_CHAR(sell_date, 'YYYY-MM-DD') AS sell_date,
+    COUNT(product) AS num_sold,
+    -- LISTAGG 是 Oracle 的黏合劑，WITHIN GROUP 決定排序
+    LISTAGG(product, ',') WITHIN GROUP (ORDER BY product) AS products
+FROM (
+    -- 步驟 1：先去重，保證同一天同產品只留下一筆
+    SELECT DISTINCT sell_date, product FROM Activities
+)
+GROUP BY sell_date
+ORDER BY sell_date;
+
+-- PostgreSQL (使用 STRING_AGG)
+-- PostgreSQL 的風格介於兩者之間。
+SELECT 
+    sell_date,
+    COUNT(DISTINCT product) AS num_sold,
+    STRING_AGG(DISTINCT product, ',' ORDER BY product) AS products
+FROM Activities
+GROUP BY sell_date
+ORDER BY sell_date;
+
+-- 1327. List the Products Ordered in a Period
 
 
 
