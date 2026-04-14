@@ -353,7 +353,51 @@ WHERE activity_date BETWEEN TO_DATE('2019-07-27', 'YYYY-MM-DD') - 29
 AND TO_DATE('2019-07-27', 'YYYY-MM-DD')
 GROUP BY activity_date
 
--- 1667. Fix Names in a Table 
-SELECT user_id, CONCAT(UPPER(SUBSTR(name, 1, 1)), LOWER(SUBSTR(name, 2, LENGTH(name)))) as name FROM USERS
-order by user_id
+-- 1729. Find Followers Count
+SELECT user_id, COUNT(DISTINCT follower_id ) as followers_count 
+FROM Followers 
+GROUP BY user_id
+ORDER BY user_id 
+
+-- 619. Biggest Single Number 是練習「子查詢（Subquery）」與「聚合過濾（HAVING）」的絕佳案例。
+-- 第一步（內層）：找出所有「單身數字」。第二步（外層）：從這些「單身數字」中挑出老大
+SELECT max(num) as num
+FROM(SELECT num
+    FROM MyNumbers 
+    GROUP BY num
+    HAVING COUNT(num) = 1
+) t -- 注意：在 MySQL 裡這個 't' (別名) 是強制的，Oracle 則可有可無
+
+
+-- 1789. Primary Department for Each Employee
+-- 解題邏輯：兩條路徑的交集
+-- 我們可以用 UNION 把這兩群人接起來，這是最直覺的思考方式： 
+  -- 路徑 1：直接找 primary_flag = 'Y' 的人。 
+  -- 路徑 2：用 GROUP BY 找出那些「只出現過一次」的員工編號，再抓出他們的資料。
+SELECT employee_id, department_id
+FROM Employee 
+WHERE primary_flag = 'Y'
+UNION
+SELECT employee_id, department_id
+FROM Employee 
+WHERE employee_id IN (
+	SELECT employee_id 
+	FROM Employee
+	GROUP BY employee_id
+	HAVING COUNT(employee_id) = 1
+)
+
+-- 610. Triangle Judgement
+SELECT x, y, z, 
+CASE 
+	WHEN x + y > z AND x + z > y AND y + z > x THEN 'Yes'
+	ELSE 'No'
+	END AS triangle
+FROM Triangle
+
+-- 196. Delete Duplicate Emails
+-- TRUNCATE TABLE Person; 清空 Person TABLE 所有data
+
+
+
 
