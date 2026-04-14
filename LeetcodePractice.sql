@@ -225,3 +225,11 @@ SELECT teacher_id, count(DISTINCT subject_id) as cnt
 FROM Teacher
 group by teacher_id
 
+-- 1731. The Number of Employees Which Report to Each Employee
+SELECT mgr.employee_id, mgr.name, COUNT(emp.reports_to ) as reports_count, ROUND(AVG(emp.age)) as average_age
+FROM Employees mgr
+INNER JOIN Employees emp on mgr.employee_id = emp.reports_to
+GROUP BY mgr.employee_id, mgr.name
+order by mgr.employee_id
+
+
