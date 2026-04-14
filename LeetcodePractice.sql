@@ -206,6 +206,11 @@ WHERE e1.salary < 30000
     -- 「哪些員工沒有任何下屬（不是別人的主管）」，而不是題目要的「主管離職了」。
     --  結果： 你會抓到所有**「基層員工」**（因為沒人把他們當主管），但這跟主管有沒有離職完全無關。
   AND NOT EXISTS (
+    -- 為什麼 1 號 (Kalel) 「不會」出現？
+    -- 外層 (e1)：現在輪到 1 號 Kalel。他的 manager_id 是 11。 
+    -- 內層 (e2)：電腦拿著 11 去 e2.employee_id 找。 
+    -- 結果：電腦找到了 Joziah (11號)！所以 EXISTS (存在) 是 True。
+    -- NOT EXISTS 就是FALSE，所以也就是 另外一個e1.主管id不在，e2.員工id卻在的11號
       SELECT 1 
       FROM Employees e2 
       WHERE e2.employee_id = e1.manager_id 
@@ -213,5 +218,10 @@ WHERE e1.salary < 30000
 ORDER BY e1.employee_id;
 
 
-
+-- 2356. Number of Unique Subjects Taught by Each Teacher
+-- Oracle：支援 COUNT(UNIQUE column)，它在 Oracle 裡跟 COUNT(DISTINCT ...) 是完全等價的（同義詞）。但為了代碼的可移植性，資深工程師通常還是會寫 DISTINCT。
+-- 因為MySQL (LeetCode 預設) / PostgreSQL / MS SQL 不支援 UNIQUE，只支援 DISTINCT
+SELECT teacher_id, count(DISTINCT subject_id) as cnt 
+FROM Teacher
+group by teacher_id
 
