@@ -304,5 +304,56 @@ ORDER BY user_id
 -- 字串長度,     LENGTH(),           LENGTH(),               LEN()
 
 -- 1527. Patients With a Condition
+SELECT patient_id, patient_name, conditions
+FROM Patients 
+WHERE conditions like '% DIAB1%'
+OR conditions like 'DIAB1%'
 
+SELECT patient_id, patient_name, conditions
+FROM Patients 
+WHERE REGEXP_LIKE(conditions ,'(^| )DIAB1')
+-- Reg-ex (regular expression) 快速上手：五分鐘掌握 80% 的場景
+-- Regex 看起來像亂碼，是因為它把「位置」和「內容」都用符號代替了。我們把它拆成三個部分來記：
+-- 位置與邊界（在哪裡找？）
+-- ^：字串的開頭，強制規定文字必須從這開始。 (例如 ^A 找 A 開頭的) 
+  -- - WHERE REGEXP_LIKE(code, '^AB') 找出所有以 "AB" 開頭的代碼。(等同於 LIKE 'AB%'。)
+-- $：字串的結尾。 (例如 Z$ 找 Z 結尾的) 
+  -- - WHERE REGEXP_LIKE(code, '99$') 找出所有以 "99" 結尾的代碼。(等同於 LIKE '%99'。)
+-- |：或是 (OR)。 (例如 Apple|Banana 兩者都抓)，左右兩邊的模式，只要中一個就可以。
+  -- - WHERE REGEXP_LIKE(description, 'SALE|FREE')  找出含有 "SALE" 或是 "FREE" 字樣的描述。 
+-- + (至少 1 次)： 
+  -- - 需求： 找出含有「至少一個數字」的代碼。 
+  -- - 範例： WHERE REGEXP_LIKE(code, '[0-9]+')
+-- * (0 次或多次)： 
+  -- - 需求： 找 A 後面跟著任意個 B（甚至沒有 B 也可以）。
+  -- - 範例： WHERE REGEXP_LIKE(code, 'AB*') (會抓到 A, AB, ABB, ABBB...)
+-- [ABC]：括號內的其中一個。 (例如 [aeiou] 找母音) 
+-- [0-9] 或 \d：任何一個數字。必須是數字。
+-- [a-z]：任何一個小寫字母。
+  -- - exp: WHERE REGEXP_LIKE(phone, '^09[0-9]{8}$')
+  -- - ^09：必須 09 開頭。
+  -- - [0-9]：中間必須是數字。
+  -- - {8}：數字必須剛好出現 8 次。
+  -- - $：後面不能再有任何字了（剛好結束）。
+-- 三大資料庫「模糊比對」功能對照:
+-- 功能,          Oracle,                                     MySQL,                              PostgreSQL
+-- 標準比對,      LIKE,                                       LIKE,                               LIKE (大小寫敏感) / ILIKE (不敏感)
+-- 正則函數,      WHERE conditions "REGEXP_LIKE(col, pat)",   WHERE conditions REGEXP '\\bDIAB1', WHERE conditions  ~ '(^| )DIAB1'
+-- 單字邊界處理,  強大，支援 [[:space:]],                       支援 \\b,                           支援 \y 或 `(^
+
+-- 1141. User Activity for the Past 30 Days I
+-- Oracle 處理日期非常嚴謹，建議使用 TO_DATE 確保格式正確，並利用其強大的日期算術。
+-- 在 Oracle 中，DATE 其實包含了日期和時間，當你的 NLS（環境語言設定）預設包含時間時，它就會跑出那串討人厭的 00:00:00。
+-- 要在 LeetCode 的 Oracle 環境中消除它，你有幾個方法，最推薦的是 TO_CHAR。
+SELECT 
+	TO_CHAR(activity_date, 'YYYY-MM-DD') as day, 
+	COUNT(DISTINCT user_id) as active_users
+FROM Activity 
+WHERE activity_date BETWEEN TO_DATE('2019-07-27', 'YYYY-MM-DD') - 29
+AND TO_DATE('2019-07-27', 'YYYY-MM-DD')
+GROUP BY activity_date
+
+-- 1667. Fix Names in a Table
+SELECT user_id, CONCAT(UPPER(SUBSTR(name, 1, 1)), LOWER(SUBSTR(name, 2, LENGTH(name)))) as name FROM USERS
+order by user_id
 
