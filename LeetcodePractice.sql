@@ -317,7 +317,7 @@ WHERE REGEXP_LIKE(conditions ,'(^| )DIAB1')
 -- 位置與邊界（在哪裡找？）
 -- ^：字串的開頭，強制規定文字必須從這開始。 (例如 ^A 找 A 開頭的) 
   -- - WHERE REGEXP_LIKE(code, '^AB') 找出所有以 "AB" 開頭的代碼。(等同於 LIKE 'AB%'。)
--- $：字串的結尾。 (例如 Z$ 找 Z 結尾的) 
+-- $：字串的結尾。 (例如 Z$ 找 Z 結尾的，也是確保Z之後沒任何東西) 
   -- - WHERE REGEXP_LIKE(code, '99$') 找出所有以 "99" 結尾的代碼。(等同於 LIKE '%99'。)
 -- |：或是 (OR)。 (例如 Apple|Banana 兩者都抓)，左右兩邊的模式，只要中一個就可以。
   -- - WHERE REGEXP_LIKE(description, 'SALE|FREE')  找出含有 "SALE" 或是 "FREE" 字樣的描述。 
@@ -442,6 +442,21 @@ GROUP BY sell_date
 ORDER BY sell_date;
 
 -- 1327. List the Products Ordered in a Period
+SELECT product_name, SUM(unit) as unit 
+FROM Products p
+LEFT JOIN Orders o on p.product_id = o.product_id   
+WHERE order_date BETWEEN TO_DATE('2020-02-29', 'YYYY-MM-DD') - 28 AND TO_DATE('2020-02-29', 'YYYY-MM-DD')
+GROUP BY product_name
+HAVING SUM(unit) >= 100
 
+-- 1517. Find Users With Valid E-Mails
+SELECT user_id, name, mail
+FROM Users
+WHERE REGEXP_LIKE(mail, '^[A-Za-z][A-Za-z0-9._-]*@leetcode\.com$')
 
-
+-- ^[A-Za-z]: 開頭為A-Z或a-z
+-- [A-Za-z0-9._-]*: 中間內容為A-Z或a-z或0-9或._-(允許的字元集合 + 任意數量)
+-- \.: 轉義字元	把萬用字元 . 變回普通的「點」。
+-- $: 字串結尾, 確保 .com 之後沒有其他東西（防止有人寫 .com.tw）。
+-- 我犯的錯誤: [A-Za-z0-9-_.]，把 - 放在了 9 和 _ 之間。電腦的理解：它會以為你要找的是 「從 9 到 _ 之間的所有字元」（就像 A-Z 代表 A 到 Z 一樣）。
+-- 其他注意點: . 必須寫成 \. 才能代表真正的點。我的寫法 \.com 在 Oracle 中通常是正確的，但如果你發現還是沒過，可以檢查一下環境是否需要雙斜線（例如 MySQL 有時需要 \\.com）。
