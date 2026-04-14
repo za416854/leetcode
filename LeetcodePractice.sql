@@ -353,7 +353,7 @@ WHERE activity_date BETWEEN TO_DATE('2019-07-27', 'YYYY-MM-DD') - 29
 AND TO_DATE('2019-07-27', 'YYYY-MM-DD')
 GROUP BY activity_date
 
--- 1667. Fix Names in a Table
+-- 1667. Fix Names in a Table 
 SELECT user_id, CONCAT(UPPER(SUBSTR(name, 1, 1)), LOWER(SUBSTR(name, 2, LENGTH(name)))) as name FROM USERS
 order by user_id
 
